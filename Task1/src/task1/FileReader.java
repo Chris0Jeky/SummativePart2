@@ -7,15 +7,25 @@ import java.util.Vector;
 
 public class FileReader {
 
-    public static Vector read() {
+    public Vector<String> read() {
 
-        Vector vectorisedFile = new Vector();
+        Vector<String> vectorisedFile = new Vector<>();
+
         try {
-            String dataFile = System.getProperty("user.dir") + File.separator + "sports-personalities.txt";
+            String dataFile = System.getProperty("user.dir") + File.separator + "Task1/sports-personalities.txt";
+            System.out.println("Datafile path: " + dataFile);
             File file = new File(dataFile);
+            if (!file.exists()) {
+                System.out.println("File does not exist");
+                return null;
+            }
+            if (!file.canRead()) {
+                System.out.println("File cannot be read");
+                return null;
+            }
             try (Scanner reader = new Scanner(file)) {
-                while (reader.hasNext()) {
-                    String data = reader.next();
+                while (reader.hasNextLine()) {
+                    String data = reader.nextLine();
                     vectorisedFile.addElement(data);
                 }
             }
