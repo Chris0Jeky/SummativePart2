@@ -13,17 +13,19 @@ public class FileReader {
 
         try {
             String dataFile = System.getProperty("user.dir") + File.separator + "Task1/sports-personalities.txt";
-            System.out.println("Datafile path: " + dataFile);
             File file = new File(dataFile);
             if (!file.exists()) {
+                //For debugging purposes
                 System.out.println("File does not exist");
                 return null;
             }
             if (!file.canRead()) {
+                //For debugging purposes
                 System.out.println("File cannot be read");
                 return null;
             }
             try (Scanner reader = new Scanner(file)) {
+                //Reads the file line by line
                 while (reader.hasNextLine()) {
                     String data = reader.nextLine();
                     vectorisedFile.addElement(data);
@@ -34,5 +36,14 @@ public class FileReader {
             return null;
         }
         return vectorisedFile;
+    }
+
+    public void printRead() {
+        //For debugging purposes
+        FileReader read = new FileReader();
+        Vector<String> vecty = read.read();
+        for (String s : vecty) {
+            System.out.println(s);
+        }
     }
 }
