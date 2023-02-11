@@ -1,5 +1,7 @@
 package task1;
 
+import java.util.HashMap;
+
 public class ObjectBuilder {
     public static SportsPerson buildSportsPerson(String name, String sport, String nation){
         return new SportsPerson(name, sport, nation);
@@ -20,28 +22,32 @@ public class ObjectBuilder {
 
     public static Object[] createSportsAward(String data){
 
-        int year = Integer.parseInt(data.substring(0, 4));
-        String winnerName = data.substring(5, data.indexOf("("));
-        String winnerNation = data.substring(data.indexOf("(") + 1, data.indexOf(")"));
-        String winnerSport = data.substring(data.indexOf(",") + 1, data.indexOf("|"));
-        SportsPerson winner = buildSportsPerson(winnerName, winnerSport, winnerNation);
-        String secondName = data.substring(data.indexOf("|") + 1, data.indexOf("(", data.indexOf("|")));
-        String secondNation = data.substring(data.indexOf("(", data.indexOf("|")) + 1, data.indexOf(")", data.indexOf("|")));
-        String secondSport = data.substring(data.indexOf(",", data.indexOf("|")) + 1, data.indexOf("|", data.indexOf("|") + 1));
-        SportsPerson second = buildSportsPerson(secondName, secondSport, secondNation);
-        int beginIndex = data.indexOf("|", data.indexOf("|") + 1) + 1;
-        int endIndex = data.indexOf("(", data.indexOf("|", data.indexOf("|") + 1));
-        String thirdName = data.substring(beginIndex, endIndex);
-        String thirdNation = data.substring(endIndex + 1, data.indexOf(")", data.indexOf("|", data.indexOf("|") + 1)));
-        String thirdSport = data.substring(data.indexOf(",", data.indexOf("|", data.indexOf("|") + 1)) + 1, data.indexOf("|", beginIndex));
-        SportsPerson third = buildSportsPerson(thirdName, thirdSport, thirdNation);
-        String teamName = data.substring(data.indexOf("|", beginIndex) + 1, data.indexOf("(", data.indexOf("|", beginIndex)));
-        int fromIndex = data.indexOf("|", data.indexOf("|", beginIndex) + 1);
-        String teamSport = data.substring(data.indexOf(",", data.indexOf("|", beginIndex)) + 1, fromIndex);
-        String teamNation = data.substring(data.indexOf("(", data.indexOf("|", beginIndex) + 1) + 1, data.indexOf(")", data.indexOf("|", beginIndex) + 1));
-        String teamCaptain = data.substring(data.indexOf(",", fromIndex) + 1, data.length());
-        SportsTeam team = buildSportsTeam(teamName, teamSport, teamNation, teamCaptain);
-        SportsAward award = buildSportsAward(Integer.toString(year), winner, second, third, team);
-        return new Object[]{award, winner, second, third, team};
+        String[] fields = data.split("\\|");
+        String year = fields[0];
+        String winner = fields[1].split(",")[0];
+        String winnerNation = fields[1].split("\\(")[1].split("\\)")[0];
+        String winnerSport = fields[1].split(",")[1];
+        String second = fields[2].split(",")[0];
+        String secondNation = fields[2].split("\\(")[1].split("\\)")[0];
+        String secondSport = fields[2].split(",")[1];
+        String third = fields[3].split(",")[0];
+        String thirdNation = fields[3].split("\\(")[1].split("\\)")[0];
+        String thirdSport = fields[3].split(",")[1];
+        String team = fields[4].split(",")[0];
+        String teamNation = fields[4].split("\\(")[1].split("\\)")[0];
+        String teamSport = fields[4].split(",")[1];
+        String teamCaptain = fields[4].split(",")[2];
+
+        SportsPerson winnerPerson = buildSportsPerson(winner, winnerSport, winnerNation);
+        SportsPerson secondPerson = buildSportsPerson(second, secondSport, secondNation);
+        SportsPerson thirdPerson = buildSportsPerson(third, thirdSport, thirdNation);
+        SportsTeam teamPerson = buildSportsTeam(team, teamSport, teamNation, teamCaptain);
+        SportsAward award = buildSportsAward(year, winnerPerson, secondPerson, thirdPerson, teamPerson);
+        return new Object[]{year, winnerPerson, secondPerson, thirdPerson, teamPerson, award};
     }
+
+    HashMap<String, SportsPerson> sportsPersonMap = new HashMap<String, SportsPerson>();
+    HashMap<String, SportsTeam> sportsTeamMap = new HashMap<String, SportsTeam>();
+    HashMap<String, SportsAward> sportsAwardMap = new HashMap<String, SportsAward>();
+
 }
