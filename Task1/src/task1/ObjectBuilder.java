@@ -20,7 +20,7 @@ public class ObjectBuilder {
     1997|Greg Rusedski (ENG),Tennis|Tim Henman (ENG),Tennis|Steve Redgrave (ENG),Rowing|British & Irish Lions squad (UK),Rugby union,Martin Johnson
 */
 
-    public static Object[] createSportsAward(String data){
+    public static Object[] mkArrayOfData(String data){
 
         String[] fields = data.split("\\|");
         String year = fields[0];

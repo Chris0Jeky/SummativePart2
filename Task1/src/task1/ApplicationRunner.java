@@ -1,8 +1,5 @@
 package task1;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 import java.util.Vector;
 
 public class ApplicationRunner {
@@ -14,7 +11,7 @@ public class ApplicationRunner {
         Vector<String> vecty = read.read();
         System.out.println(vecty.get(0));
         System.out.println(createSportsAward(vecty.get(0)));
-        Object[] ar = ObjectBuilder.createSportsAward(vecty.get(0));
+        Object[] ar = ObjectBuilder.mkArrayOfData(vecty.get(0));
         System.out.println(ar[0]);
         System.out.println(ar[1].toString());
         System.out.println(ar[2].toString());
@@ -32,7 +29,7 @@ public class ApplicationRunner {
 
     public static SportsAward createSportsAward(String data){
 
-        ObjectBuilder.createSportsAward(data);
+        ObjectBuilder.mkArrayOfData(data);
 
 
         return null;
