@@ -3,11 +3,11 @@ package task1;
 import java.awt.*;
 
 public class SportsAward {
-    String year;
-    SportsPerson winner;
-    SportsPerson second;
-    SportsPerson third;
-    SportsTeam team;
+    private String year;
+    private SportsPerson winner;
+    private SportsPerson second;
+    private SportsPerson third;
+    private SportsTeam team;
 
     SportsAward(){
 

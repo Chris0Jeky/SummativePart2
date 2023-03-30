@@ -1,9 +1,9 @@
 package task1;
 
 public class SportsPerson {
-    String name;
-    String sport;
-    String nation;
+    private String name;
+    private String sport;
+    private String nation;
 
     SportsPerson(){
 

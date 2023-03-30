@@ -1,10 +1,10 @@
 package task1;
 
 public class SportsTeam {
-    String teamName;
-    String sport;
-    String nation;
-    String teamCaptain;
+    private String teamName;
+    private String sport;
+    private String nation;
+    private String teamCaptain;
 
     SportsTeam(){
 
