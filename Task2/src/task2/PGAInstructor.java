@@ -1,20 +1,19 @@
 package task2;
 
-public class PGAInstructor {
+class PGAInstructor {
     private String name;
-    private String coachingLevel;
+    private int coachLevel;
 
-    public PGAInstructor(String name, String level) {
+    public PGAInstructor(String name, int coachLevel) {
         this.name = name;
-        this.coachingLevel = level;
+        this.coachLevel = coachLevel;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getCoachingLevel() {
-        return coachingLevel;
+    public int getCoachLevel() {
+        return coachLevel;
     }
-
 }

@@ -12,4 +12,20 @@ abstract class Tuition {
         this.day = day;
         this.time = time;
     }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public PGAInstructor getInstructor() {
+        return instructor;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public int getTime() {
+        return time;
+    }
 }
