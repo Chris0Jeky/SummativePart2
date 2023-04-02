@@ -18,6 +18,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextInputDialog;
+import java.util.Optional;
+
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -28,6 +33,9 @@ public class ApplicationRunner extends Application {
     private Scene mainScene;
     private Scene mapScene;
     private Scene fitnessScene;
+
+    private double distance;
+    private int timeInMinutes;
 
     @Override
     public void start(Stage primaryStage) {
@@ -170,6 +178,47 @@ public class ApplicationRunner extends Application {
 
         return fitnessScreen;
     }
+
+    private void handleDistanceClick() {
+        TextInputDialog distanceInputDialog = new TextInputDialog();
+        distanceInputDialog.setTitle("Distance");
+        distanceInputDialog.setHeaderText("Enter the distance (km):");
+
+        Optional<String> distanceInput = distanceInputDialog.showAndWait();
+        distanceInput.ifPresent(input -> {
+            try {
+                distance = Double.parseDouble(input);
+            } catch (NumberFormatException e) {
+                showAlert("Invalid input", "Please enter a valid number for distance.");
+            }
+        });
+    }
+
+    private void handleTimeClick() {
+        TextInputDialog timeInputDialog = new TextInputDialog();
+        timeInputDialog.setTitle("Time");
+        timeInputDialog.setHeaderText("Enter the time (minutes):");
+
+        Optional<String> timeInput = timeInputDialog.showAndWait();
+        timeInput.ifPresent(input -> {
+            try {
+                timeInMinutes = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                showAlert("Invalid input", "Please enter a valid number for time.");
+            }
+        });
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+
+
 
 
 }
