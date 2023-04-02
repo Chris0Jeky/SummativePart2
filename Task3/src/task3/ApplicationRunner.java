@@ -1,11 +1,25 @@
 
 package task3;
 
+
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class ApplicationRunner extends Application {
@@ -84,7 +98,7 @@ public class ApplicationRunner extends Application {
         BorderPane mapScreen = new BorderPane();
 
         // Load the map image and create an ImageView to display it
-        Image mapImage = new Image("com/yourname/cyclingapp/images/map_image.png");
+        Image mapImage = new Image("file:map.png");
         ImageView mapView = new ImageView(mapImage);
         mapScreen.setCenter(mapView);
 
@@ -95,24 +109,6 @@ public class ApplicationRunner extends Application {
 
         return mapScreen;
     }
-
-
-    private BorderPane createMapScreen() {
-        BorderPane mapScreen = new BorderPane();
-
-        // Load the map image and create an ImageView to display it
-        Image mapImage = new Image("com/yourname/cyclingapp/images/map_image.png");
-        ImageView mapView = new ImageView(mapImage);
-        mapScreen.setCenter(mapView);
-
-        // Add a back button at the bottom left
-        Button backButton = new Button("Back");
-        backButton.setOnAction(event -> handleBackButtonClick());
-        mapScreen.setBottom(backButton);
-
-        return mapScreen;
-    }
-
 
     private void handleMapSectionClick() {
         // Change the scene to the map screen
@@ -144,6 +140,35 @@ public class ApplicationRunner extends Application {
     private void handleBackButtonClick() {
         // Change the scene back to the main screen
         primaryStage.setScene(mainScene);
+    }
+
+    private GridPane createFitnessScreen() {
+        GridPane fitnessScreen = new GridPane();
+
+        // Create labels for each section
+        Label distanceLabel = new Label("Distance");
+        Label timeLabel = new Label("Time");
+        Label caloriesLabel = new Label("Calories");
+        Label hrZoneLabel = new Label("HR Zone");
+        Label powerZoneLabel = new Label("Power Zone");
+        Label stopLabel = new Label("Stop");
+
+        // Add event handlers for interactive sections (Distance and Time)
+        // You'll need to implement the handleDistanceClick and handleTimeClick methods
+        distanceLabel.setOnMouseClicked(event -> handleDistanceClick());
+        timeLabel.setOnMouseClicked(event -> handleTimeClick());
+
+        // Add labels to the fitness screen
+        fitnessScreen.add(distanceLabel, 0, 0);
+        fitnessScreen.add(timeLabel, 1, 0);
+        fitnessScreen.add(caloriesLabel, 0, 1);
+        fitnessScreen.add(hrZoneLabel, 1, 1);
+        fitnessScreen.add(powerZoneLabel, 0, 2);
+        fitnessScreen.add(stopLabel, 1, 2);
+
+        // Style the fitness screen as needed
+
+        return fitnessScreen;
     }
 
 
