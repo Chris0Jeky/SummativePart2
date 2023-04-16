@@ -11,10 +11,17 @@ public class ApplicationRunner {
         //read.printRead();
 
         Vector<String> vecty = read.read();
-
         Object[][] objectifiedAwards = objectifyData(vecty);
+
+        /* Testing objectifyAwards
         System.out.println(objectifiedAwards[0][0].toString());
-/*  Testing objectifyData
+        System.out.println(((SportsPerson)objectifiedAwards[0][1]).getName());
+        System.out.println(((SportsPerson)objectifiedAwards[0][1]).getSport());
+        */
+
+
+
+        /*  Testing objectifyData
         Vector<String> sampleData = new Vector<>();
         sampleData.add("1995|Jonathan Edwards (ENG),Athletics|Frank Bruno (ENG),Boxing|Colin McRae (SCO),Rallying|Ryder Cup team (EU),Golf,Bernard Gallacher");
         sampleData.add("1996|Damon Hill (ENG),Formula One|Steve Redgrave (ENG),Rowing|Frankie Dettori (ITA),Horse racing|Olympic rowing pairs (UK),Rowing,N/A");
