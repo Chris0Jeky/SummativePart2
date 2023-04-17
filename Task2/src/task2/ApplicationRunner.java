@@ -3,59 +3,95 @@ package task2;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class ApplicationRunner {
-    private List<Member> members;
-    private List<PGAInstructor> instructors;
-    private List<Booking> bookings;
 
-    public ApplicationRunner() {
-        members = new ArrayList<>();
-        instructors = new ArrayList<>();
-        bookings = new ArrayList<>();
-        initializeData();
-    }
+        private static List<Member> members;
+        private static List<PGAInstructor> instructors;
+        private static List<Booking> bookings;
 
-    private void initializeData() {
-    }
+        public static void main(String[] args) {
+            // Initialize the required data structures and load dummy data.
+            members = new ArrayList<>();
+            instructors = new ArrayList<>();
+            bookings = new ArrayList<>();
 
-    // The rest of the constructor and initialization methods remain the same
+            loadDummyData();
 
-    private void bookOneToOneTuition() {
-        // The method remains mostly the same, but create a OneToOneLesson object instead of a Lesson object
-        OneToOneLesson oneToOneLesson = new OneToOneLesson(member, instructor, day, hour);
-        Booking booking = new Booking(oneToOneLesson, day, hour);
-        bookings.add(booking);
-        System.out.println("One-to-one lesson booked successfully.");
-    }
+            boolean running = true;
+            Scanner scanner = new Scanner(System.in);
 
-    private void bookJuniorGroupTuition() {
-        // The method remains mostly the same, but create a GroupLesson object instead of a Lesson object
-        GroupLesson groupLesson = new GroupLesson(member, instructor, day, hour, spacesAvailable - 1);
-        Booking booking = new Booking(groupLesson, day, hour);
-        bookings.add(booking);
-        System.out.println("Junior group lesson booked successfully.");
-    }
+            while (running) {
+                System.out.println("\nGolf Lesson Booking System");
+                System.out.println("1. Book one-to-one tuition");
+                System.out.println("2. Book junior group tuition");
+                System.out.println("3. List instructor bookings");
+                System.out.println("4. List member bookings");
+                System.out.println("0. Exit");
+                System.out.print("Enter your choice: ");
+                int choice = scanner.nextInt();
 
-    private void listInstructorBookings() {
-        // The method remains mostly the same, but use the tuition attribute of the Booking class
-        for (Booking booking : bookings) {
-            Tuition tuition = booking.getTuition();
-            if (tuition.getInstructor().equals(instructor)) {
-                String lessonType = tuition instanceof OneToOneLesson ? "one-to-one" : "group";
-                System.out.println(booking.getDay() + " " + booking.getTime() + ":00 " + lessonType + " - " + tuition.getMember().getName());
+                switch (choice) {
+                    case 1:
+                        bookOneToOneTuition();
+                        break;
+                    case 2:
+                        bookJuniorGroupTuition();
+                        break;
+                    case 3:
+                        listInstructorBookings();
+                        break;
+                    case 4:
+                        listMemberBookings();
+                        break;
+                    case 0:
+                        running = false;
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
             }
+
+            scanner.close();
         }
+
+        // Additional methods for loading dummy data and handling each use case go here.
+
+    private static void loadDummyData() {
+        // Add dummy data for members
+        members.add(new AdultMember("Alice"));
+        members.add(new AdultMember("Bob"));
+        members.add(new JuniorMember("Charlie"));
+        members.add(new JuniorMember("David"));
+
+        // Add dummy data for instructors
+        instructors.add(new PGAInstructor("Instructor 1", 4));
+        instructors.add(new PGAInstructor("Instructor 2", 4));
+        instructors.add(new PGAInstructor("Instructor 3", 3));
+        instructors.add(new PGAInstructor("Instructor 4", 3));
+        instructors.add(new PGAInstructor("Instructor 5", 3));
+
+        // Add dummy data for bookings
+        bookings.add(new Booking(members.get(0), new OneToOneLesson(), instructors.get(0), "Monday", "09:00"));
+        bookings.add(new Booking(members.get(2), new GroupLesson(3), instructors.get(2), "Monday", "16:00"));
     }
 
-    private void listMemberBookings() {
-        // The method remains mostly the same, but use the tuition attribute of the Booking class
-        for (Booking booking : bookings) {
-            Tuition tuition = booking.getTuition();
-            if (tuition.getMember().equals(member)) {
-                String lessonType = tuition instanceof OneToOneLesson ? "one-to-one" : "group";
-                System.out.println(booking.getDay() + " " + booking.getTime() + ":00 " + lessonType + " - " + tuition.getInstructor().getName());
-            }
+
+    private static void bookOneToOneTuition() {
+            // Handle booking one-to-one tuition.
         }
-    }
+
+        private static void bookJuniorGroupTuition() {
+            // Handle booking junior group tuition.
+        }
+
+        private static void listInstructorBookings() {
+            // List instructor bookings.
+        }
+
+        private static void listMemberBookings() {
+            // List member bookings.
+        }
 }
