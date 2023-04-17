@@ -44,10 +44,16 @@ public class Menu {
         int choice = 5;
         while(choice != 0){
             mainMenu();
-            choice = Integer.parseInt(getInput(1));
+            try {
+                choice = Integer.parseInt(getInput(1));
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid choice.");
+                choice = -1; // Set choice to -1 to continue the loop without exiting.
+                continue;
+            }
             if (choice == 1) {
                listOfYear();
-                waitForEnter();
+               waitForEnter();
             } else if (choice == 2) {
                 String year = getInput(0);
                 displayYear(ApplicationRunner.objectifiedAwards, year);
@@ -71,15 +77,35 @@ public class Menu {
             choice = Integer.parseInt(getInput(1));
             if (choice == 1) {
                 System.out.println("Sorted by sport");
+                System.out.println("------------------------------------------------------------------------------------");
+                System.out.println("| Sport     | 1st Place(s) | 2nd Place(s) | 3rd Place(s) | Total |");
+                System.out.println("------------------------------------------------------------------------------------");
                 for (Object[] row : ApplicationRunner.sortedInfoSport) {
-                    System.out.println(Arrays.toString(row));
+                    String sport = (String) row[0];
+                    int firstPlace = (int) row[1];
+                    int secondPlace = (int) row[2];
+                    int thirdPlace = (int) row[3];
+                    int total = firstPlace + secondPlace + thirdPlace;
+
+                    System.out.printf("| %-9s | %-12d | %-12d | %-12d | %-5d |\n", sport, firstPlace, secondPlace, thirdPlace, total);
                 }
+                System.out.println("------------------------------------------------------------------------------------");
                 waitForEnter();
             } else if (choice == 2) {
                 System.out.println("Sorted by person");
+                System.out.println("------------------------------------------------------------------------------------");
+                System.out.println("| Person              | 1st Place(s) | 2nd Place(s) | 3rd Place(s) | Total |");
+                System.out.println("------------------------------------------------------------------------------------");
                 for (Object[] row : ApplicationRunner.sortedInfoPerson) {
-                    System.out.println(Arrays.toString(row));
+                    String person = (String) row[0];
+                    int firstPlace = (int) row[1];
+                    int secondPlace = (int) row[2];
+                    int thirdPlace = (int) row[3];
+                    int total = firstPlace + secondPlace + thirdPlace;
+
+                    System.out.printf("| %-18s | %-12d | %-12d | %-12d | %-5d |\n", person, firstPlace, secondPlace, thirdPlace, total);
                 }
+                System.out.println("------------------------------------------------------------------------------------");
                 waitForEnter();
             } else if (choice == 0) {
                 System.out.println("Exiting...");
@@ -93,7 +119,7 @@ public class Menu {
 
     private static void waitForEnter() {
         Scanner input = new Scanner(System.in);
-        System.out.println("Press enter to continue...");
+        System.out.println("Press enter to continue... (press it again)");
         input.nextLine(); // wait for enter
     }
 
