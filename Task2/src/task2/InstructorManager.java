@@ -14,9 +14,9 @@ public class InstructorManager {
     }
 
     public static PGAInstructor selectInstructor(Scanner scanner) {
-        System.out.println("Select an instructor:");
-        int instructorChoice = readIntInRange(scanner, 1, instructors.size()) - 1;
+        int instructorChoice;
         do {
+            System.out.println("Select an instructor:");
             for (int i = 0; i < instructors.size(); i++) {
                 System.out.println((i + 1) + ". " + instructors.get(i).getName() + " (Level " + instructors.get(i).getCoachLevel() + ")");
             }

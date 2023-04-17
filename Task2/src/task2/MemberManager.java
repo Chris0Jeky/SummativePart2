@@ -15,9 +15,9 @@ public class MemberManager {
     }
 
     public static Member selectMember(Scanner scanner) {
-        System.out.println("Select a member:");
-        int memberChoice = readIntInRange(scanner, 1, members.size()) - 1;
+        int memberChoice;
         do {
+            System.out.println("Select a member for the booking:");
             for (int i = 0; i < members.size(); i++) {
                 System.out.println((i + 1) + ". " + members.get(i).getName());
             }
@@ -34,13 +34,14 @@ public class MemberManager {
     }
 
     public static JuniorMember selectJuniorMember(Scanner scanner) {
-        System.out.println("Select a junior member:");
-        List<JuniorMember> juniorMembers = members.stream()
-                .filter(m -> m instanceof JuniorMember)
-                .map(m -> (JuniorMember) m)
-                .collect(Collectors.toList());
-        int juniorMemberChoice = readIntInRange(scanner, 1, juniorMembers.size()) - 1;
+        int juniorMemberChoice;
+        List<JuniorMember> juniorMembers;
         do {
+            System.out.println("Select a junior member:");
+            juniorMembers = members.stream()
+                    .filter(m -> m instanceof JuniorMember)
+                    .map(m -> (JuniorMember) m)
+                    .collect(Collectors.toList());
             for (int i = 0; i < juniorMembers.size(); i++) {
                 System.out.println((i + 1) + ". " + juniorMembers.get(i).getName());
             }
