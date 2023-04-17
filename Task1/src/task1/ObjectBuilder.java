@@ -1,5 +1,6 @@
 package task1;
 
+// methods for creating objects of the SportsPerson, SportsTeam and SportsAward classes from a String
 public class ObjectBuilder {
     public static SportsPerson buildSportsPerson(String name, String sport, String nation){
         return new SportsPerson(name, sport, nation);
@@ -13,11 +14,15 @@ public class ObjectBuilder {
         return new SportsAward(year, winner, second, third, team);
     }
 
+    // example of data format
     /*1995|Jonathan Edwards (ENG),Athletics|Frank Bruno (ENG),Boxing|Colin McRae (SCO),Rallying|Ryder Cup team (EU),Golf,Bernard Gallacher
     1996|Damon Hill (ENG),Formula One|Steve Redgrave (ENG),Rowing|Frankie Dettori (ITA),Horse racing|Olympic rowing pairs (UK),Rowing,N/A
     1997|Greg Rusedski (ENG),Tennis|Tim Henman (ENG),Tennis|Steve Redgrave (ENG),Rowing|British & Irish Lions squad (UK),Rugby union,Martin Johnson
 */
 
+    // slicing up the data string into the appropriate fields
+    // and creating objects of the SportsPerson, SportsTeam and SportsAward classes
+    // and returning an array of objects
     public static Object[] mkArrayOfData(String data){
 
         String[] fields = data.split("\\|");

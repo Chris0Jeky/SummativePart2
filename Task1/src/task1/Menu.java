@@ -1,6 +1,5 @@
 package task1;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Menu {
@@ -40,6 +39,9 @@ public class Menu {
         System.out.println("--------------------");
     }
 
+    //  Method to get input from user
+    // and keeping the menu open
+    // calls every other meny method
     public static void menuLoop(){
         int choice = 5;
         while(choice != 0){
@@ -71,6 +73,7 @@ public class Menu {
         }
     }
 
+    // and keeping the menu open for sortMenu
     public static void sortMenuLoop(){
         int choice = 5;
         while(choice != 0){
@@ -124,12 +127,14 @@ public class Menu {
         }
     }
 
+    // method to add a pause in the displaying of information
     private static void waitForEnter() {
         Scanner input = new Scanner(System.in);
         System.out.println("Press enter to continue... (press it again)");
         input.nextLine(); // wait for enter
     }
 
+    // method to display the list of years
     public static String getInput(int type){
         Scanner input = new Scanner(System.in);
         String inputString = "";
@@ -148,6 +153,7 @@ public class Menu {
         return inputString;
     }
 
+    // method for input validation of year
     public static boolean validYear(Object[][] objectifiedAwards, String year){
         boolean valid = false;
         for (Object[] row : objectifiedAwards) {
@@ -167,6 +173,7 @@ public class Menu {
         return valid;
     }
 
+    // method to display the list of years associated with the awards
     public static void listOfYear(){
         System.out.println("--------------------------------------------------------------------------");
         System.out.println("|   Year  |    Individual Award     |           Team Award               |");
@@ -181,7 +188,7 @@ public class Menu {
         System.out.println("--------------------------------------------------------------------------");
     }
 
-
+    // associated with the select option
     public static void displayYear(Object[][] objectifiedAwards, String year) {
         if (year.equals("0")) {
             return;

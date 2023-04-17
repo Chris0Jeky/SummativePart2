@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 public class Mechanics {
+    // Sorts a 2D array of Objects by the 2nd, 3rd, and 4th columns
     public static Object[][] bubbleSort(Object[][] infoToSort) {
         Object[] temp;
         for (int i = 0; i < infoToSort.length - 1; i++) {
@@ -37,6 +38,7 @@ public class Mechanics {
     }
 
     // does the previous method on a Vector of Strings
+    // and returns a 2D array of Objects
     public static Object[][] objectifyData(Vector<String> vecty){
         Object[][] objectifiedAwards = new Object[vecty.size()][6];
         for (int i = 0; i < vecty.size(); i++){
@@ -46,6 +48,11 @@ public class Mechanics {
         return objectifiedAwards;
     }
 
+    // Creates a HashMap of SportsPerson objects
+    // keeps track of medals per person or sport
+    // takes in the name of the person or the name of the sport
+    // and the index of the medal type (gold, silver, bronze)
+    // and increments the value at that index
     public static void incrementOrAdd(String name, HashMap<String, Integer[]> map, int index){
         if (map.containsKey(name)){
             Integer[] temp = map.get(name);
@@ -58,6 +65,12 @@ public class Mechanics {
         }
     }
 
+    // Transforms a HashMap into a 2D array
+    // the first column is the key
+    // the second column is the number of gold medals
+    // the third column is the number of silver medals
+    // the fourth column is the number of bronze medals
+    // the fifth column is the total number of medals
     public static Object[][] transformIntoBiArr(HashMap<String, Integer[]> map){
         Object[][] biArr = new Object[map.size()][5];
         int i = 0;
@@ -72,6 +85,7 @@ public class Mechanics {
         return biArr;
     }
 
+    // Creates a 2D array of Objects for holding the list of sports and medals
     public static Object[][] makeSportMedalsList(Object[][] objectifiedAwards){
         Object[][] sportsMedalsList = new Object[objectifiedAwards.length][5];
         HashMap<String, Integer[]> sportMap = new HashMap<>();
@@ -84,6 +98,7 @@ public class Mechanics {
         return sportsMedalsList;
     }
 
+    // Creates a 2D array of Objects for holding the list of people and medals
     public static Object[][] makePersonMedalList(Object[][] objectifiedAwards){
         Object[][] personMedalList = new Object[objectifiedAwards.length][5];
         HashMap<String, Integer[]> personMap = new HashMap<>();

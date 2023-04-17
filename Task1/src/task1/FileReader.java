@@ -12,6 +12,8 @@ public class FileReader {
         Vector<String> vectorisedFile = new Vector<>();
 
         try {
+            //Gets the current working directory
+            //  and appends the file name to it
             String dataFile = System.getProperty("user.dir") + File.separator + "Task1/sports-personalities.txt";
             File file = new File(dataFile);
             if (!file.exists()) {
