@@ -9,65 +9,93 @@ import java.util.stream.Collectors;
 
 public class ApplicationRunner {
 
-        private static List<Member> members;
-        private static List<PGAInstructor> instructors;
-        private static List<Booking> bookings;
+    private static List<Member> members;
+    private static List<PGAInstructor> instructors;
+    private static List<Booking> bookings;
 
-        public static void main(String[] args) {
-            // Initialize the required data structures and load dummy data.
-            members = new ArrayList<>();
-            instructors = new ArrayList<>();
-            bookings = new ArrayList<>();
+    public static void main(String[] args) {
+        // Initialize the required data structures and load dummy data.
+        members = new ArrayList<>();
+        instructors = new ArrayList<>();
+        bookings = new ArrayList<>();
 
-            loadDummyData();
+        loadDummyData();
 
-            boolean running = true;
-            Scanner scanner = new Scanner(System.in);
+        boolean running = true;
+        Scanner scanner = new Scanner(System.in);
 
-            while (running) {
-                displayMenu();  // Display the menu
-                int choice = scanner.nextInt();
-                scanner.nextLine(); // Consume the newline character
+        while (running) {
+            displayMenu();  // Display the menu
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
 
-                switch (choice) {
-                    case 1:
-                        Member member = selectMember(scanner);
-                        PGAInstructor instructor = selectInstructor(scanner);
+            switch (choice) {
+                case 1:
+                    Member member = selectMember(scanner);
+                    PGAInstructor instructor = selectInstructor(scanner);
+                    String day;
+                    int time;
+                    boolean validInput;
+                    do {
+                        validInput = true;
                         System.out.print("Enter the day for the lesson: ");
-                        String day = scanner.nextLine();
+                        day = scanner.nextLine();
                         System.out.print("Enter the time for the lesson (9 to 18): ");
-                        int time = scanner.nextInt();
+                        time = scanner.nextInt();
                         scanner.nextLine(); // Consume the newline character
-                        bookOneToOneTuition(member, instructor, day, time);
-                        break;
-                    case 2:
-                        JuniorMember selectedJuniorMember = selectJuniorMember(scanner);
-                        PGAInstructor selectedGroupInstructor = selectInstructor(scanner);
-                        System.out.print("Enter the day for the group lesson: ");
-                        String groupDay = scanner.nextLine();
-                        System.out.print("Enter the time for the group lesson (16 or 17): ");
-                        int groupTime = scanner.nextInt();
-                        bookJuniorGroupTuition(selectedJuniorMember, selectedGroupInstructor, groupDay, groupTime);
-                        break;
-                    case 3:
-                        PGAInstructor instructorToCheck = selectInstructor(scanner);
-                        listInstructorBookings(instructorToCheck);
-                        break;
-                    case 4:
-                        Member memberToCheck = selectMember(scanner);
-                        listMemberBookings(memberToCheck);
-                        break;
-                    case 0:
-                        running = false;
-                        break;
-                    default:
-                        System.out.println("Invalid choice. Please try again.");
-                        break;
-                }
-            }
 
-            scanner.close();
+                        if (!isValidDay(day)) {
+                            System.out.println("Invalid day. Please enter a valid day (e.g., Monday, Tuesday, etc.).");
+                            validInput = false;
+                        } else if (!isValidTime(time)) {
+                            System.out.println("Invalid time. Please enter a valid time between 9 and 18 (inclusive).");
+                            validInput = false;
+                        }
+                    } while (!validInput);
+                    bookOneToOneTuition(member, instructor, day, time);
+                    break;
+                case 2:
+                    JuniorMember selectedJuniorMember = selectJuniorMember(scanner);
+                    PGAInstructor selectedGroupInstructor = selectInstructor(scanner);
+                    String groupDay;
+                    int groupTime;
+                    do {
+                        validInput = true;
+                        System.out.print("Enter the day for the group lesson: ");
+                        groupDay = scanner.nextLine();
+                        System.out.print("Enter the time for the group lesson (16 or 17): ");
+                        groupTime = scanner.nextInt();
+                        scanner.nextLine(); // Consume the newline character
+
+                        if (!isValidWeekday(groupDay)) {
+                            System.out.println("Invalid day. Please enter a valid weekday (e.g., Monday, Tuesday, etc.).");
+                            validInput = false;
+                        } else if (groupTime != 16 && groupTime != 17) {
+                            System.out.println("Invalid time. Please enter a valid time (16 or 17).");
+                            validInput = false;
+                        }
+                    } while (!validInput);
+                    bookJuniorGroupTuition(selectedJuniorMember, selectedGroupInstructor, groupDay, groupTime);
+                    break;
+                case 3:
+                    PGAInstructor instructorToCheck = selectInstructor(scanner);
+                    listInstructorBookings(instructorToCheck);
+                    break;
+                case 4:
+                    Member memberToCheck = selectMember(scanner);
+                    listMemberBookings(memberToCheck);
+                    break;
+                case 0:
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
         }
+
+        scanner.close();
+    }
 
     private static void displayMenu() {
         System.out.println("\nGolf Lesson Booking System");
@@ -159,7 +187,6 @@ public class ApplicationRunner {
         bookings.add(new Booking(new OneToOneLesson(members.get(0), instructors.get(0), "Monday", 9)));
         bookings.add(new Booking(new GroupLesson(members.get(2), instructors.get(2), "Monday", 16, 3)));
     }
-
 
 
     public static void bookOneToOneTuition(Member member, PGAInstructor instructor, String day, int time) {
