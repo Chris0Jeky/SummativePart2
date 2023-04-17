@@ -1,5 +1,6 @@
 package task1;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -12,6 +13,17 @@ public class ApplicationRunner {
 
         Vector<String> vecty = read.read();
         Object[][] objectifiedAwards = objectifyData(vecty);
+        Object[][] sortedInfoPerson = bubbleSort(makePersonMedalList(objectifiedAwards));
+        Object[][] sortedInfoSport = bubbleSort(makeSportMedalsList(objectifiedAwards));
+        System.out.println("Sorted by person");
+        for (Object[] row : sortedInfoPerson) {
+            System.out.println(Arrays.toString(row));
+        }
+        System.out.println("Sorted by sport");
+        for (Object[] row : sortedInfoSport) {
+            System.out.println(Arrays.toString(row));
+        }
+
 
         /* Testing objectifyAwards
         System.out.println(objectifiedAwards[0][0].toString());
@@ -74,16 +86,26 @@ public class ApplicationRunner {
     // Bubble sort method
     // Sorts by the second column of the 2D array which is the number of 1st place awards
     // It returns both with SportsPerson and Sports
-    public static Object[][] bubbleSort (Object[][] infoToSort){
+    public static Object[][] bubbleSort(Object[][] infoToSort) {
+        Object[] temp;
+        for (int i = 0; i < infoToSort.length - 1; i++) {
+            for (int j = 0; j < infoToSort.length - 1 - i; j++) {
+                boolean shouldSwap = false;
 
-        //Object[][] sortedInfo = new Object[infoToSort.length][5];
-        Object[] temp = new Object[5];
-        for (int i = 0; i < infoToSort.length; i++){
-            for (int j = 0; j < infoToSort.length; j++){
-                if (((Integer)infoToSort[i][1]) > ((Integer)infoToSort[j][1])){
-                    temp = infoToSort[i];
-                    infoToSort[i] = infoToSort[j];
-                    infoToSort[j] = temp;
+                for (int col = 1; col <= 3; col++) {
+                    int comparison = ((Integer) infoToSort[j][col]).compareTo((Integer) infoToSort[j + 1][col]);
+                    if (comparison < 0) {
+                        shouldSwap = true;
+                        break;
+                    } else if (comparison > 0) {
+                        break;
+                    }
+                }
+
+                if (shouldSwap) {
+                    temp = infoToSort[j];
+                    infoToSort[j] = infoToSort[j + 1];
+                    infoToSort[j + 1] = temp;
                 }
             }
         }
