@@ -80,19 +80,68 @@ public class ApplicationRunner {
 
 
 
-    private static void bookOneToOneTuition() {
-            // Handle booking one-to-one tuition.
+    public static void bookOneToOneTuition(Member member, PGAInstructor instructor, String day, int time) {
+        // Check if the member or the instructor already has a booking at the specified day and time
+        for (Booking booking : bookings) {
+            Tuition tuition = booking.getTuition();
+            if ((tuition.getMember().equals(member) || tuition.getInstructor().equals(instructor)) &&
+                    tuition.getDay().equalsIgnoreCase(day) && tuition.getTime() == time) {
+                System.out.println("The selected member or the selected instructor already has a booking at the specified day/time.");
+                return;
+            }
         }
 
-        private static void bookJuniorGroupTuition() {
-            // Handle booking junior group tuition.
+        // Create a new one-to-one lesson and add it to the bookings
+        OneToOneLesson oneToOneLesson = new OneToOneLesson(member, instructor, day, time);
+        Booking newBooking = new Booking(oneToOneLesson);
+        bookings.add(newBooking);
+        System.out.println("One-to-one lesson booked successfully.");
+    }
+
+
+    public static void bookJuniorGroupTuition(JuniorMember member, PGAInstructor instructor, String day, int time) {
+        // Check if the junior member already has two group lesson bookings for the week
+        int groupLessonCount = 0;
+        for (Booking booking : bookings) {
+            Tuition tuition = booking.getTuition();
+            if (tuition instanceof GroupLesson && tuition.getMember().equals(member)) {
+                groupLessonCount++;
+            }
+        }
+        if (groupLessonCount >= 2) {
+            System.out.println("The selected junior member already has two group lesson bookings for the week.");
+            return;
         }
 
-        private static void listInstructorBookings() {
-            // List instructor bookings.
-        }
+        // Create a new group lesson and add it to the bookings
+        GroupLesson groupLesson = new GroupLesson(member, instructor, day, time, 3);
+        Booking newBooking = new Booking(groupLesson);
+        bookings.add(newBooking);
+        System.out.println("Junior group lesson booked successfully.");
+    }
 
-        private static void listMemberBookings() {
-            // List member bookings.
+
+    public static void listInstructorBookings(PGAInstructor instructor) {
+        System.out.println("Bookings for " + instructor.getName() + ":");
+        for (Booking booking : bookings) {
+            Tuition tuition = booking.getTuition();
+            if (tuition.getInstructor().equals(instructor)) {
+                System.out.println("Day: " + tuition.getDay() + ", Time: " + tuition.getTime() + ", Type: " +
+                        (tuition instanceof OneToOneLesson ? "One-to-One" : "Group") + ", Member: " + tuition.getMember().getName());
+            }
         }
+    }
+
+
+    public static void listMemberBookings(Member member) {
+        System.out.println("Bookings for " + member.getName() + ":");
+        for (Booking booking : bookings) {
+            Tuition tuition = booking.getTuition();
+            if (tuition.getMember().equals(member)) {
+                System.out.println("Day: " + tuition.getDay() + ", Time: " + tuition.getTime() + ", Type: " +
+                        (tuition instanceof OneToOneLesson ? "One-to-One" : "Group") + ", Instructor: " + tuition.getInstructor().getName());
+            }
+        }
+    }
+
 }
