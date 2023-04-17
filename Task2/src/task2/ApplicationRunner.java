@@ -35,6 +35,7 @@ public class ApplicationRunner {
 
         while (running) {
             displayMenu();  // Display the menu
+            System.out.print("\nEnter your choice: "); // Add a newline character here
             int choice = readIntInRange(scanner, 0, 4); // Read the user's choice
             scanner.nextLine(); // Consume the newline character
 
@@ -50,7 +51,7 @@ public class ApplicationRunner {
                         System.out.print("Enter the day for the lesson: ");
                         day = scanner.nextLine();
                         System.out.print("Enter the time for the lesson (9 to 18): ");
-                        time = scanner.nextInt();
+                        time = readIntInRange(scanner, 9, 18);
                         scanner.nextLine(); // Consume the newline character
 
                         if (!isValidDay(day)) {
@@ -73,7 +74,7 @@ public class ApplicationRunner {
                         System.out.print("Enter the day for the group lesson: ");
                         groupDay = scanner.nextLine();
                         System.out.print("Enter the time for the group lesson (16 or 17): ");
-                        groupTime = scanner.nextInt();
+                        groupTime = readIntInRange(scanner, 16, 17);
                         scanner.nextLine(); // Consume the newline character
 
                         if (!isValidWeekday(groupDay)) {
@@ -113,7 +114,6 @@ public class ApplicationRunner {
         System.out.println("3. List instructor bookings");
         System.out.println("4. List member bookings");
         System.out.println("0. Exit");
-        System.out.print("Enter your choice: ");
     }
 
     private static void loadDummyData() {
@@ -184,8 +184,6 @@ public class ApplicationRunner {
                 System.out.println("Invalid choice. Please enter a number between " + min + " and " + max + ".");
             }
         } while (input < min || input > max);
-        scanner.nextLine(); // Consume the newline character
         return input;
     }
-
 }
