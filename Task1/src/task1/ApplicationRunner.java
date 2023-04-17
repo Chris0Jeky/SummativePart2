@@ -14,13 +14,14 @@ public class ApplicationRunner {
 
     public static void main(String[] args) {
 
-        System.out.println("Sorted by person");
+        /*System.out.println("Sorted by person");
         for (Object[] row : sortedInfoPerson) {
             System.out.println(Arrays.toString(row));
         }
         System.out.println("Sorted by sport");
         for (Object[] row : sortedInfoSport) {
             System.out.println(Arrays.toString(row));
-        }
+        }*/
+        Menu.menuLoop();
     }
 }

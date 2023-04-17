@@ -47,8 +47,8 @@ public class Menu {
             if (choice == 1) {
                //listOfYear();
             } else if (choice == 2) {
-                getInput(0);
-
+                String year = getInput(0);
+                displayYear(ApplicationRunner.objectifiedAwards, year);
             } else if (choice == 3) {
                // sortMenuLoop();
             } else if (choice == 0) {
@@ -94,17 +94,44 @@ public class Menu {
         }
         if (valid) {
             System.out.println("Valid year");
-        } else {
+        }
+        else if (year.equals("0")) {
+            System.out.println("Exiting...");
+        }else {
             System.out.println("Invalid year, enter 0 to exit");
         }
         return valid;
     }
 
-    public static void displayYear(Object[][] objectifiedAwards, String year){
+    public static void listOfYear(){
+        System.out.println("List of years");
+        for (Object[] row : ApplicationRunner.objectifiedAwards) {
+            System.out.println(row[0]);
+        }
+    }
+
+    public static void displayYear(Object[][] objectifiedAwards, String year) {
+        if (year.equals("0")) {
+            return;
+        }
+
+        System.out.println("-------------------------------------------------------------------------------------------------------------");
+        System.out.println("|                Individual Sports Person                |                    Team                          |");
+        System.out.println("-------------------------------------------------------------------------------------------------------------");
+
         for (Object[] row : objectifiedAwards) {
             if (row[0].equals(year)) {
-                System.out.println(Arrays.toString(row));
+                SportsPerson winner = (SportsPerson) row[1];
+                SportsPerson second = (SportsPerson) row[2];
+                SportsPerson third = (SportsPerson) row[3];
+                SportsTeam team = (SportsTeam) row[4];
+
+                System.out.printf("| %-6s | %-15s | %-10s | %-10s | %-25s |\n", "Winner", winner.getName(), winner.getSport(), winner.getNation(), team.getTeamName());
+                System.out.printf("| %-6s | %-15s | %-10s | %-10s | %-25s |\n", "Second", second.getName(), second.getSport(), second.getNation(), "Captain: " + team.getTeamCaptain());
+                System.out.printf("| %-6s | %-15s | %-10s | %-10s | %-25s |\n", "Third", third.getName(), third.getSport(), third.getNation(), team.getNation());
+                System.out.println("-------------------------------------------------------------------------------------------------------------");
             }
         }
     }
+
 }
