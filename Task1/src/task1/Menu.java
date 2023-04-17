@@ -36,6 +36,7 @@ public class Menu {
         System.out.println("--------------------");
         System.out.println("Sort by sport .....1");
         System.out.println("Sort by person ....2");
+        System.out.println("Exit ............. 0");
         System.out.println("--------------------");
     }
 
@@ -45,14 +46,44 @@ public class Menu {
             mainMenu();
             choice = Integer.parseInt(getInput(1));
             if (choice == 1) {
-               //listOfYear();
+               listOfYear();
+                waitForEnter();
             } else if (choice == 2) {
                 String year = getInput(0);
                 displayYear(ApplicationRunner.objectifiedAwards, year);
+                waitForEnter();
             } else if (choice == 3) {
-               // sortMenuLoop();
+                sortMenu();
+                sortMenuLoop();
             } else if (choice == 0) {
                 System.out.println("Exiting...");
+            } else {
+                System.out.println("Invalid choice");
+                waitForEnter();
+            }
+        }
+    }
+
+    public static void sortMenuLoop(){
+        int choice = 5;
+        while(choice != 0){
+            sortMenu();
+            choice = Integer.parseInt(getInput(1));
+            if (choice == 1) {
+                System.out.println("Sorted by sport");
+                for (Object[] row : ApplicationRunner.sortedInfoSport) {
+                    System.out.println(Arrays.toString(row));
+                }
+                waitForEnter();
+            } else if (choice == 2) {
+                System.out.println("Sorted by person");
+                for (Object[] row : ApplicationRunner.sortedInfoPerson) {
+                    System.out.println(Arrays.toString(row));
+                }
+                waitForEnter();
+            } else if (choice == 0) {
+                System.out.println("Exiting...");
+                menuLoop();
             } else {
                 System.out.println("Invalid choice");
                 waitForEnter();
@@ -104,11 +135,19 @@ public class Menu {
     }
 
     public static void listOfYear(){
-        System.out.println("List of years");
+        System.out.println("--------------------------------------------------------------------------");
+        System.out.println("|   Year  |    Individual Award     |           Team Award               |");
+        System.out.println("--------------------------------------------------------------------------");
         for (Object[] row : ApplicationRunner.objectifiedAwards) {
-            System.out.println(row[0]);
+            String year = (String) row[0];
+            SportsPerson winnerPerson = (SportsPerson) row[1];
+            SportsTeam teamPerson = (SportsTeam) row[4];
+
+            System.out.printf("| %-4s | %-17s | %-32s |\n", year, winnerPerson.getName(), teamPerson.getTeamName());
         }
+        System.out.println("--------------------------------------------------------------------------");
     }
+
 
     public static void displayYear(Object[][] objectifiedAwards, String year) {
         if (year.equals("0")) {
