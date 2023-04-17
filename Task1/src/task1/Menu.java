@@ -63,6 +63,7 @@ public class Menu {
                 sortMenuLoop();
             } else if (choice == 0) {
                 System.out.println("Exiting...");
+                System.exit(0);
             } else {
                 System.out.println("Invalid choice");
                 waitForEnter();
@@ -74,7 +75,13 @@ public class Menu {
         int choice = 5;
         while(choice != 0){
             sortMenu();
-            choice = Integer.parseInt(getInput(1));
+            try {
+                choice = Integer.parseInt(getInput(1));
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid choice.");
+                choice = -1; // Set choice to -1 to continue the loop without exiting.
+                continue;
+            }
             if (choice == 1) {
                 System.out.println("Sorted by sport");
                 System.out.println("------------------------------------------------------------------------------------");

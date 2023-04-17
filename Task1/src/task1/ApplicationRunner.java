@@ -1,6 +1,5 @@
 package task1;
 
-import java.util.Arrays;
 import java.util.Vector;
 
 public class ApplicationRunner {
@@ -13,15 +12,6 @@ public class ApplicationRunner {
     static Object[][] sortedInfoSport = Mechanics.bubbleSort(Mechanics.makeSportMedalsList(objectifiedAwards));
 
     public static void main(String[] args) {
-
-        /*System.out.println("Sorted by person");
-        for (Object[] row : sortedInfoPerson) {
-            System.out.println(Arrays.toString(row));
-        }
-        System.out.println("Sorted by sport");
-        for (Object[] row : sortedInfoSport) {
-            System.out.println(Arrays.toString(row));
-        }*/
         Menu.menuLoop();
     }
 }
