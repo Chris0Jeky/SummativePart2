@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import static task2.BookingManager.bookJuniorGroupTuition;
 import static task2.BookingManager.bookOneToOneTuition;
@@ -36,7 +35,7 @@ public class ApplicationRunner {
 
         while (running) {
             displayMenu();  // Display the menu
-            int choice = scanner.nextInt();
+            int choice = readIntInRange(scanner, 0, 4); // Read the user's choice
             scanner.nextLine(); // Consume the newline character
 
             switch (choice) {
@@ -171,6 +170,22 @@ public class ApplicationRunner {
                         (tuition instanceof OneToOneLesson ? "One-to-One" : "Group") + ", Instructor: " + tuition.getInstructor().getName());
             }
         }
+    }
+
+    public static int readIntInRange(Scanner scanner, int min, int max) {
+        int input;
+        do {
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.next();
+            }
+            input = scanner.nextInt();
+            if (input < min || input > max) {
+                System.out.println("Invalid choice. Please enter a number between " + min + " and " + max + ".");
+            }
+        } while (input < min || input > max);
+        scanner.nextLine(); // Consume the newline character
+        return input;
     }
 
 }

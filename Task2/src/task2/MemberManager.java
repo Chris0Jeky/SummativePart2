@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import static task2.ApplicationRunner.readIntInRange;
+
 public class MemberManager {
 
     private static List<Member> members;
@@ -14,7 +16,7 @@ public class MemberManager {
 
     public static Member selectMember(Scanner scanner) {
         System.out.println("Select a member:");
-        int memberChoice = -1;
+        int memberChoice = readIntInRange(scanner, 1, members.size()) - 1;
         do {
             for (int i = 0; i < members.size(); i++) {
                 System.out.println((i + 1) + ". " + members.get(i).getName());
@@ -37,7 +39,7 @@ public class MemberManager {
                 .filter(m -> m instanceof JuniorMember)
                 .map(m -> (JuniorMember) m)
                 .collect(Collectors.toList());
-        int juniorMemberChoice = -1;
+        int juniorMemberChoice = readIntInRange(scanner, 1, juniorMembers.size()) - 1;
         do {
             for (int i = 0; i < juniorMembers.size(); i++) {
                 System.out.println((i + 1) + ". " + juniorMembers.get(i).getName());

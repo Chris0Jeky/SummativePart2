@@ -3,6 +3,8 @@ package task2;
 import java.util.List;
 import java.util.Scanner;
 
+import static task2.ApplicationRunner.readIntInRange;
+
 public class InstructorManager {
 
     private static List<PGAInstructor> instructors;
@@ -13,7 +15,7 @@ public class InstructorManager {
 
     public static PGAInstructor selectInstructor(Scanner scanner) {
         System.out.println("Select an instructor:");
-        int instructorChoice = -1;
+        int instructorChoice = readIntInRange(scanner, 1, instructors.size()) - 1;
         do {
             for (int i = 0; i < instructors.size(); i++) {
                 System.out.println((i + 1) + ". " + instructors.get(i).getName() + " (Level " + instructors.get(i).getCoachLevel() + ")");
