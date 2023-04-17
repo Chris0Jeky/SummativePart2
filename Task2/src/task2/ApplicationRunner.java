@@ -75,12 +75,20 @@ public class ApplicationRunner {
 
     private static Member selectMember(Scanner scanner) {
         System.out.println("Select a member:");
-        for (int i = 0; i < members.size(); i++) {
-            System.out.println((i + 1) + ". " + members.get(i).getName());
-        }
-        System.out.print("Enter your choice: ");
-        int memberChoice = scanner.nextInt() - 1;
-        scanner.nextLine(); // Consume the newline character
+        int memberChoice = -1;
+        do {
+            for (int i = 0; i < members.size(); i++) {
+                System.out.println((i + 1) + ". " + members.get(i).getName());
+            }
+            System.out.print("Enter your choice: ");
+            memberChoice = scanner.nextInt() - 1;
+            scanner.nextLine(); // Consume the newline character
+
+            if (memberChoice < 0 || memberChoice >= members.size()) {
+                System.out.println("Invalid choice. Please try again.");
+            }
+        } while (memberChoice < 0 || memberChoice >= members.size());
+
         return members.get(memberChoice);
     }
 
@@ -90,23 +98,40 @@ public class ApplicationRunner {
                 .filter(m -> m instanceof JuniorMember)
                 .map(m -> (JuniorMember) m)
                 .collect(Collectors.toList());
-        for (int i = 0; i < juniorMembers.size(); i++) {
-            System.out.println((i + 1) + ". " + juniorMembers.get(i).getName());
-        }
-        System.out.print("Enter your choice: ");
-        int juniorMemberChoice = scanner.nextInt() - 1;
-        scanner.nextLine(); // Consume the newline character
+        int juniorMemberChoice = -1;
+        do {
+            for (int i = 0; i < juniorMembers.size(); i++) {
+                System.out.println((i + 1) + ". " + juniorMembers.get(i).getName());
+            }
+            System.out.print("Enter your choice: ");
+            juniorMemberChoice = scanner.nextInt() - 1;
+            scanner.nextLine(); // Consume the newline character
+
+            if (juniorMemberChoice < 0 || juniorMemberChoice >= juniorMembers.size()) {
+                System.out.println("Invalid choice. Please try again.");
+            }
+        } while (juniorMemberChoice < 0 || juniorMemberChoice >= juniorMembers.size());
+
         return juniorMembers.get(juniorMemberChoice);
     }
 
+
     private static PGAInstructor selectInstructor(Scanner scanner) {
         System.out.println("Select an instructor:");
-        for (int i = 0; i < instructors.size(); i++) {
-            System.out.println((i + 1) + ". " + instructors.get(i).getName() + " (Level " + instructors.get(i).getCoachLevel() + ")");
-        }
-        System.out.print("Enter your choice: ");
-        int instructorChoice = scanner.nextInt() - 1;
-        scanner.nextLine(); // Consume the newline character
+        int instructorChoice = -1;
+        do {
+            for (int i = 0; i < instructors.size(); i++) {
+                System.out.println((i + 1) + ". " + instructors.get(i).getName() + " (Level " + instructors.get(i).getCoachLevel() + ")");
+            }
+            System.out.print("Enter your choice: ");
+            instructorChoice = scanner.nextInt() - 1;
+            scanner.nextLine(); // Consume the newline character
+
+            if (instructorChoice < 0 || instructorChoice >= instructors.size()) {
+                System.out.println("Invalid choice. Please try again.");
+            }
+        } while (instructorChoice < 0 || instructorChoice >= instructors.size());
+
         return instructors.get(instructorChoice);
     }
 
