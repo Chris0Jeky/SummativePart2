@@ -2,6 +2,7 @@
 package task2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -157,6 +158,18 @@ public class ApplicationRunner {
 
 
     public static void bookOneToOneTuition(Member member, PGAInstructor instructor, String day, int time) {
+
+        // Validate day input
+        if (!isValidDay(day)) {
+            System.out.println("Invalid day. Please enter a valid day (e.g., Monday, Tuesday, etc.).");
+            return;
+        }
+
+        // Validate time input
+        if (!isValidTime(time)) {
+            System.out.println("Invalid time. Please enter a valid time between 9 and 18 (inclusive).");
+            return;
+        }
         // Check if the member or the instructor already has a booking at the specified day and time
         for (Booking booking : bookings) {
             Tuition tuition = booking.getTuition();
@@ -176,6 +189,19 @@ public class ApplicationRunner {
 
 
     public static void bookJuniorGroupTuition(JuniorMember member, PGAInstructor instructor, String day, int time) {
+
+        // Validate day input
+        if (!isValidWeekday(day)) {
+            System.out.println("Invalid day. Please enter a valid weekday (e.g., Monday, Tuesday, etc.).");
+            return;
+        }
+
+        // Validate time input
+        if (time != 16 && time != 17) {
+            System.out.println("Invalid time. Please enter a valid time (16 or 17).");
+            return;
+        }
+
         // Check if the junior member already has two group lesson bookings for the week
         int groupLessonCount = 0;
         for (Booking booking : bookings) {
@@ -196,6 +222,19 @@ public class ApplicationRunner {
         System.out.println("Junior group lesson booked successfully.");
     }
 
+    private static boolean isValidDay(String day) {
+        String[] validDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        return Arrays.stream(validDays).anyMatch(d -> d.equalsIgnoreCase(day));
+    }
+
+    private static boolean isValidWeekday(String day) {
+        String[] validDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+        return Arrays.stream(validDays).anyMatch(d -> d.equalsIgnoreCase(day));
+    }
+
+    private static boolean isValidTime(int time) {
+        return time >= 9 && time <= 18;
+    }
 
     public static void listInstructorBookings(PGAInstructor instructor) {
         System.out.println("Bookings for " + instructor.getName() + ":");
