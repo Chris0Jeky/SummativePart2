@@ -22,7 +22,5 @@ public class ApplicationRunner {
         for (Object[] row : sortedInfoSport) {
             System.out.println(Arrays.toString(row));
         }
-
-
     }
 }

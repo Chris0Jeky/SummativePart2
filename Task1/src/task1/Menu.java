@@ -1,9 +1,9 @@
 package task1;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Menu {
-    ApplicationRunner app = new ApplicationRunner();
 
     public static void mainMenu(){
         System.out.println("--------------------");
@@ -43,11 +43,12 @@ public class Menu {
         int choice = 5;
         while(choice != 0){
             mainMenu();
-            choice = getInput(1);
+            choice = Integer.parseInt(getInput(1));
             if (choice == 1) {
                //listOfYear();
             } else if (choice == 2) {
-              //  selectMenuLoop();
+                getInput(0);
+
             } else if (choice == 3) {
                // sortMenuLoop();
             } else if (choice == 0) {
@@ -65,31 +66,45 @@ public class Menu {
         input.nextLine(); // wait for enter
     }
 
-    public static int getInput(int type){
+    public static String getInput(int type){
         Scanner input = new Scanner(System.in);
-        String inputString;
+        String inputString = "";
         if (type == 0) {
             System.out.println("Enter year: ");
             inputString = input.nextLine();
+            while (!validYear(ApplicationRunner.objectifiedAwards, inputString) && !inputString.equals("0")) {
+                System.out.println("Enter year: ");
+                inputString = input.nextLine();
+            }
+
         } else if (type == 1) {
             System.out.println("Enter your choice: ");
+            inputString = input.nextLine();
         }
-        return input.nextInt();
+        return inputString;
     }
 
-    public static void validYear(Object[][] objectifiedAwards){
-        int year = getInput(0);
+    public static boolean validYear(Object[][] objectifiedAwards, String year){
         boolean valid = false;
         for (Object[] row : objectifiedAwards) {
             if (row[0].equals(year)) {
                 valid = true;
+                break;
             }
         }
         if (valid) {
             System.out.println("Valid year");
         } else {
-            System.out.println("Invalid year");
+            System.out.println("Invalid year, enter 0 to exit");
         }
-        waitForEnter();
+        return valid;
+    }
+
+    public static void displayYear(Object[][] objectifiedAwards, String year){
+        for (Object[] row : objectifiedAwards) {
+            if (row[0].equals(year)) {
+                System.out.println(Arrays.toString(row));
+            }
+        }
     }
 }
