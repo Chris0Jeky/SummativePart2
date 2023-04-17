@@ -25,25 +25,20 @@ public class ApplicationRunner {
             Scanner scanner = new Scanner(System.in);
 
             while (running) {
-                System.out.println("\nGolf Lesson Booking System");
-                System.out.println("1. Book one-to-one tuition");
-                System.out.println("2. Book junior group tuition");
-                System.out.println("3. List instructor bookings");
-                System.out.println("4. List member bookings");
-                System.out.println("0. Exit");
-                System.out.print("Enter your choice: ");
+                displayMenu();  // Display the menu
                 int choice = scanner.nextInt();
                 scanner.nextLine(); // Consume the newline character
 
                 switch (choice) {
                     case 1:
-                        Member selectedMember = selectMember(scanner);
-                        PGAInstructor selectedInstructor = selectInstructor(scanner);
+                        Member member = selectMember(scanner);
+                        PGAInstructor instructor = selectInstructor(scanner);
                         System.out.print("Enter the day for the lesson: ");
                         String day = scanner.nextLine();
                         System.out.print("Enter the time for the lesson (9 to 18): ");
                         int time = scanner.nextInt();
-                        bookOneToOneTuition(selectedMember, selectedInstructor, day, time);
+                        scanner.nextLine(); // Consume the newline character
+                        bookOneToOneTuition(member, instructor, day, time);
                         break;
                     case 2:
                         JuniorMember selectedJuniorMember = selectJuniorMember(scanner);
@@ -73,6 +68,16 @@ public class ApplicationRunner {
 
             scanner.close();
         }
+
+    private static void displayMenu() {
+        System.out.println("\nGolf Lesson Booking System");
+        System.out.println("1. Book one-to-one tuition");
+        System.out.println("2. Book junior group tuition");
+        System.out.println("3. List instructor bookings");
+        System.out.println("4. List member bookings");
+        System.out.println("0. Exit");
+        System.out.print("Enter your choice: ");
+    }
 
     private static Member selectMember(Scanner scanner) {
         System.out.println("Select a member:");
