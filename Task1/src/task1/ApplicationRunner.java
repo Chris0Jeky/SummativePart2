@@ -1,6 +1,7 @@
 package task1;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Vector;
 
 public class ApplicationRunner {
@@ -71,7 +72,9 @@ public class ApplicationRunner {
     1996|Damon Hill (ENG),Formula One|Steve Redgrave (ENG),Rowing|Frankie Dettori (ITA),Horse racing|Olympic rowing pairs (UK),Rowing,N/A
     1997|Greg Rusedski (ENG),Tennis|Tim Henman (ENG),Tennis|Steve Redgrave (ENG),Rowing|British & Irish Lions squad (UK),Rugby union,Martin Johnson
 */
-
+    // Bubble sort method
+    // Sorts by the second column of the 2D array which is the number of 1st place awards
+    // It returns both with SportsPerson and Sports
     public static Object[][] bubbleSort (Object[][] infoToSort){
 
         //Object[][] sortedInfo = new Object[infoToSort.length][5];
@@ -86,13 +89,15 @@ public class ApplicationRunner {
             }
         }
         return infoToSort;
-
     }
+
+    // Creates an array of Objects from a String
     public static Object[] objectifyString(String data){
 
         return ObjectBuilder.mkArrayOfData(data);
     }
 
+    // does the previous method on a Vector of Strings
     public static Object[][] objectifyData(Vector<String> vecty){
         Object[][] objectifiedAwards = new Object[vecty.size()][6];
         for (int i = 0; i < vecty.size(); i++){
@@ -101,4 +106,44 @@ public class ApplicationRunner {
         }
         return objectifiedAwards;
     }
+
+    public static HashMap<String, Integer[]> incrementOrAdd(String name, HashMap<String, Integer[]> map, int index){
+        if (map.containsKey(name)){
+            Integer[] temp = map.get(name);
+            temp[index] += 1;
+            map.put(name, temp);
+        } else {
+            Integer[] temp = {0, 0, 0};
+            temp[index] += 1;
+            map.put(name, temp);
+        }
+        return map;
+    }
+
+    public static Object[][] transformIntoBiArr(HashMap<String, Integer[]> map){
+        Object[][] biArr = new Object[map.size()][5];
+        int i = 0;
+        for (String key : map.keySet()){
+            biArr[i][0] = key;
+            biArr[i][1] = map.get(key)[0];
+            biArr[i][2] = map.get(key)[1];
+            biArr[i][3] = map.get(key)[2];
+            biArr[i][4] = (Integer)biArr[i][1] + (Integer)biArr[i][2] + (Integer)biArr[i][3];
+            i++;
+        }
+        return biArr;
+    }
+
+    public static Object[][] makeSportMedalsList(Vector<String> vecty){
+        Object[][] sportsMedalsList = new Object[vecty.size()][5];
+        return sportsMedalsList;
+
+    }
+
+    public static Object[][] makePersonMedalList(Vector<String> vecty){
+        Object[][] personMedalList = new Object[vecty.size()][5];
+        return personMedalList;
+
+    }
+
 }
