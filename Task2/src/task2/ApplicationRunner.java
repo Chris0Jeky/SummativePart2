@@ -74,9 +74,10 @@ public class ApplicationRunner {
         instructors.add(new PGAInstructor("Instructor 5", 3));
 
         // Add dummy data for bookings
-        bookings.add(new Booking(members.get(0), new OneToOneLesson(), instructors.get(0), "Monday", "09:00"));
-        bookings.add(new Booking(members.get(2), new GroupLesson(3), instructors.get(2), "Monday", "16:00"));
+        bookings.add(new Booking(new OneToOneLesson(members.get(0), instructors.get(0), "Monday", 9)));
+        bookings.add(new Booking(new GroupLesson(members.get(2), instructors.get(2), "Monday", 16, 3)));
     }
+
 
 
     private static void bookOneToOneTuition() {
