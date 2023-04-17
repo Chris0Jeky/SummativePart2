@@ -5,15 +5,14 @@ import java.util.Vector;
 
 public class ApplicationRunner {
 
+    static FileReader read = new FileReader();
+    static Vector<String> vecty = read.read();
+
+    static Object[][] objectifiedAwards = Mechanics.objectifyData(vecty);
+    static Object[][] sortedInfoPerson = Mechanics.bubbleSort(Mechanics.makePersonMedalList(objectifiedAwards));
+    static Object[][] sortedInfoSport = Mechanics.bubbleSort(Mechanics.makeSportMedalsList(objectifiedAwards));
 
     public static void main(String[] args) {
-        FileReader read = new FileReader();
-
-        Vector<String> vecty = read.read();
-
-        Object[][] objectifiedAwards = Mechanics.objectifyData(vecty);
-        Object[][] sortedInfoPerson = Mechanics.bubbleSort(Mechanics.makePersonMedalList(objectifiedAwards));
-        Object[][] sortedInfoSport = Mechanics.bubbleSort(Mechanics.makeSportMedalsList(objectifiedAwards));
 
         System.out.println("Sorted by person");
         for (Object[] row : sortedInfoPerson) {
@@ -23,5 +22,7 @@ public class ApplicationRunner {
         for (Object[] row : sortedInfoSport) {
             System.out.println(Arrays.toString(row));
         }
+
+
     }
 }

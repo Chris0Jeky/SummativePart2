@@ -3,6 +3,8 @@ package task1;
 import java.util.Scanner;
 
 public class Menu {
+    ApplicationRunner app = new ApplicationRunner();
+
     public static void mainMenu(){
         System.out.println("--------------------");
         System.out.println("Sports award menu");
@@ -10,19 +12,7 @@ public class Menu {
         System.out.println("List .............. 1");
         System.out.println("Select ............ 2");
         System.out.println("Sort .............. 3");
-        System.out.println("Exit .............. 4");
-        System.out.println("--------------------");
-    }
-
-    public static void listMenu(){
-        System.out.println("--------------------");
-        System.out.println("List menu");
-        System.out.println("--------------------");
-        System.out.println("All ............... 1");
-        System.out.println("By sport .......... 2");
-        System.out.println("By nation ......... 3");
-        System.out.println("By team ........... 4");
-        System.out.println("Back .............. 6");
+        System.out.println("Exit .............. 0");
         System.out.println("--------------------");
     }
 
@@ -30,27 +20,37 @@ public class Menu {
         System.out.println("--------------------");
         System.out.println("Select menu");
         System.out.println("--------------------");
-        System.out.println("By year ........... 1");
-        System.out.println("By name ........... 2");
-        System.out.println("By sport .......... 3");
-        System.out.println("By nation ......... 4");
-        System.out.println("By team ........... 5");
-        System.out.println("Back .............. 6");
+        System.out.println("Select year of award");
         System.out.println("--------------------");
     }
 
-    public static void mainMenuLoop(){
-        int choice = 0;
-        while(choice != 4){
+    public static void listMenu(){
+        System.out.println("--------------------");
+        System.out.println("List result");
+        System.out.println("--------------------");
+    }
+
+    public static void sortMenu(){
+        System.out.println("--------------------");
+        System.out.println("Sort menu");
+        System.out.println("--------------------");
+        System.out.println("Sort by sport .....1");
+        System.out.println("Sort by person ....2");
+        System.out.println("--------------------");
+    }
+
+    public static void menuLoop(){
+        int choice = 5;
+        while(choice != 0){
             mainMenu();
-            choice = getInput();
+            choice = getInput(1);
             if (choice == 1) {
-                listMenuLoop();
+               //listOfYear();
             } else if (choice == 2) {
-                selectMenuLoop();
+              //  selectMenuLoop();
             } else if (choice == 3) {
-                sortMenuLoop();
-            } else if (choice == 4) {
+               // sortMenuLoop();
+            } else if (choice == 0) {
                 System.out.println("Exiting...");
             } else {
                 System.out.println("Invalid choice");
@@ -65,63 +65,31 @@ public class Menu {
         input.nextLine(); // wait for enter
     }
 
-    private static void listMenuLoop() {
-        choice();
-    }
-
-    private static void sortMenuLoop() {
-        choice();
-    }
-
-    private static void choice() {
-        int choice = 0;
-        while(choice != 6){
-            listMenu();
-            choice = getInput();
-            if (choice == 1) {
-                System.out.println("All");
-            } else if (choice == 2) {
-                System.out.println("By sport");
-            } else if (choice == 3) {
-                System.out.println("By nation");
-            } else if (choice == 4) {
-                System.out.println("By team");
-            } else if (choice == 6) {
-                System.out.println("Back");
-            } else {
-                System.out.println("Invalid choice");
-                waitForEnter();
-            }
-        }
-    }
-
-    private static void selectMenuLoop() {
-        int choice = 0;
-        while(choice != 6){
-            selectMenu();
-            choice = getInput();
-            if (choice == 1) {
-                System.out.println("By year");
-            } else if (choice == 2) {
-                System.out.println("By name");
-            } else if (choice == 3) {
-                System.out.println("By sport");
-            } else if (choice == 4) {
-                System.out.println("By nation");
-            } else if (choice == 5) {
-                System.out.println("By team");
-            } else if (choice == 6) {
-                System.out.println("Back");
-            } else {
-                System.out.println("Invalid choice");
-                waitForEnter();
-            }
-        }
-    }
-
-    public static int getInput(){
+    public static int getInput(int type){
         Scanner input = new Scanner(System.in);
-        System.out.println("Enter your choice: ");
+        String inputString;
+        if (type == 0) {
+            System.out.println("Enter year: ");
+            inputString = input.nextLine();
+        } else if (type == 1) {
+            System.out.println("Enter your choice: ");
+        }
         return input.nextInt();
+    }
+
+    public static void validYear(Object[][] objectifiedAwards){
+        int year = getInput(0);
+        boolean valid = false;
+        for (Object[] row : objectifiedAwards) {
+            if (row[0].equals(year)) {
+                valid = true;
+            }
+        }
+        if (valid) {
+            System.out.println("Valid year");
+        } else {
+            System.out.println("Invalid year");
+        }
+        waitForEnter();
     }
 }

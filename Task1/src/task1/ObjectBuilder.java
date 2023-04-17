@@ -1,7 +1,5 @@
 package task1;
 
-import java.util.HashMap;
-
 public class ObjectBuilder {
     public static SportsPerson buildSportsPerson(String name, String sport, String nation){
         return new SportsPerson(name, sport, nation);
@@ -23,6 +21,13 @@ public class ObjectBuilder {
     public static Object[] mkArrayOfData(String data){
 
         String[] fields = data.split("\\|");
+
+        //error handling
+        if (fields.length != 5) {
+            System.err.println("Invalid data format: " + data);
+            return null;
+        }
+
         String year = fields[0];
         String winner = fields[1].split(",")[0];
         String winnerNation = fields[1].split("\\(")[1].split("\\)")[0];
@@ -45,9 +50,4 @@ public class ObjectBuilder {
         SportsAward award = buildSportsAward(year, winnerPerson, secondPerson, thirdPerson, teamPerson);
         return new Object[]{year, winnerPerson, secondPerson, thirdPerson, teamPerson, award};
     }
-
-    HashMap<String, SportsPerson> sportsPersonMap = new HashMap<String, SportsPerson>();
-    HashMap<String, SportsTeam> sportsTeamMap = new HashMap<String, SportsTeam>();
-    HashMap<String, SportsAward> sportsAwardMap = new HashMap<String, SportsAward>();
-
 }
