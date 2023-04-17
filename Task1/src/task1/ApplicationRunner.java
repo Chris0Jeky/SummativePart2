@@ -1,6 +1,5 @@
 package task1;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -107,7 +106,7 @@ public class ApplicationRunner {
         return objectifiedAwards;
     }
 
-    public static HashMap<String, Integer[]> incrementOrAdd(String name, HashMap<String, Integer[]> map, int index){
+    public static void incrementOrAdd(String name, HashMap<String, Integer[]> map, int index){
         if (map.containsKey(name)){
             Integer[] temp = map.get(name);
             temp[index] += 1;
@@ -117,7 +116,6 @@ public class ApplicationRunner {
             temp[index] += 1;
             map.put(name, temp);
         }
-        return map;
     }
 
     public static Object[][] transformIntoBiArr(HashMap<String, Integer[]> map){
@@ -134,16 +132,28 @@ public class ApplicationRunner {
         return biArr;
     }
 
-    public static Object[][] makeSportMedalsList(Vector<String> vecty){
-        Object[][] sportsMedalsList = new Object[vecty.size()][5];
+    public static Object[][] makeSportMedalsList(Object[][] objectifiedAwards){
+        Object[][] sportsMedalsList = new Object[objectifiedAwards.length][5];
+        HashMap<String, Integer[]> sportMap = new HashMap<>();
+        for (Object[] objectifiedAward : objectifiedAwards) {
+            incrementOrAdd(((SportsPerson) objectifiedAward[1]).getSport(), sportMap, 0);
+            incrementOrAdd(((SportsPerson) objectifiedAward[2]).getSport(), sportMap, 1);
+            incrementOrAdd(((SportsPerson) objectifiedAward[3]).getSport(), sportMap, 2);
+        }
+        sportsMedalsList = transformIntoBiArr(sportMap);
         return sportsMedalsList;
-
     }
 
-    public static Object[][] makePersonMedalList(Vector<String> vecty){
-        Object[][] personMedalList = new Object[vecty.size()][5];
+    public static Object[][] makePersonMedalList(Object[][] objectifiedAwards){
+        Object[][] personMedalList = new Object[objectifiedAwards.length][5];
+        HashMap<String, Integer[]> personMap = new HashMap<>();
+        for (Object[] objectifiedAward : objectifiedAwards) {
+            incrementOrAdd(((SportsPerson) objectifiedAward[1]).getName(), personMap, 0);
+            incrementOrAdd(((SportsPerson) objectifiedAward[2]).getName(), personMap, 1);
+            incrementOrAdd(((SportsPerson) objectifiedAward[3]).getName(), personMap, 2);
+        }
+        personMedalList = transformIntoBiArr(personMap);
         return personMedalList;
-
     }
 
 }
