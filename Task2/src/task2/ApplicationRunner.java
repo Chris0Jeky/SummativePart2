@@ -4,6 +4,7 @@ package task2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class ApplicationRunner {
 
@@ -31,19 +32,34 @@ public class ApplicationRunner {
                 System.out.println("0. Exit");
                 System.out.print("Enter your choice: ");
                 int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume the newline character
 
                 switch (choice) {
                     case 1:
-                        bookOneToOneTuition();
+                        Member selectedMember = selectMember(scanner);
+                        PGAInstructor selectedInstructor = selectInstructor(scanner);
+                        System.out.print("Enter the day for the lesson: ");
+                        String day = scanner.nextLine();
+                        System.out.print("Enter the time for the lesson (9 to 18): ");
+                        int time = scanner.nextInt();
+                        bookOneToOneTuition(selectedMember, selectedInstructor, day, time);
                         break;
                     case 2:
-                        bookJuniorGroupTuition();
+                        JuniorMember selectedJuniorMember = selectJuniorMember(scanner);
+                        PGAInstructor selectedGroupInstructor = selectInstructor(scanner);
+                        System.out.print("Enter the day for the group lesson: ");
+                        String groupDay = scanner.nextLine();
+                        System.out.print("Enter the time for the group lesson (16 or 17): ");
+                        int groupTime = scanner.nextInt();
+                        bookJuniorGroupTuition(selectedJuniorMember, selectedGroupInstructor, groupDay, groupTime);
                         break;
                     case 3:
-                        listInstructorBookings();
+                        PGAInstructor instructorToCheck = selectInstructor(scanner);
+                        listInstructorBookings(instructorToCheck);
                         break;
                     case 4:
-                        listMemberBookings();
+                        Member memberToCheck = selectMember(scanner);
+                        listMemberBookings(memberToCheck);
                         break;
                     case 0:
                         running = false;
@@ -57,7 +73,42 @@ public class ApplicationRunner {
             scanner.close();
         }
 
-        // Additional methods for loading dummy data and handling each use case go here.
+    private static Member selectMember(Scanner scanner) {
+        System.out.println("Select a member:");
+        for (int i = 0; i < members.size(); i++) {
+            System.out.println((i + 1) + ". " + members.get(i).getName());
+        }
+        System.out.print("Enter your choice: ");
+        int memberChoice = scanner.nextInt() - 1;
+        scanner.nextLine(); // Consume the newline character
+        return members.get(memberChoice);
+    }
+
+    private static JuniorMember selectJuniorMember(Scanner scanner) {
+        System.out.println("Select a junior member:");
+        List<JuniorMember> juniorMembers = members.stream()
+                .filter(m -> m instanceof JuniorMember)
+                .map(m -> (JuniorMember) m)
+                .collect(Collectors.toList());
+        for (int i = 0; i < juniorMembers.size(); i++) {
+            System.out.println((i + 1) + ". " + juniorMembers.get(i).getName());
+        }
+        System.out.print("Enter your choice: ");
+        int juniorMemberChoice = scanner.nextInt() - 1;
+        scanner.nextLine(); // Consume the newline character
+        return juniorMembers.get(juniorMemberChoice);
+    }
+
+    private static PGAInstructor selectInstructor(Scanner scanner) {
+        System.out.println("Select an instructor:");
+        for (int i = 0; i < instructors.size(); i++) {
+            System.out.println((i + 1) + ". " + instructors.get(i).getName() + " (Level " + instructors.get(i).getCoachLevel() + ")");
+        }
+        System.out.print("Enter your choice: ");
+        int instructorChoice = scanner.nextInt() - 1;
+        scanner.nextLine(); // Consume the newline character
+        return instructors.get(instructorChoice);
+    }
 
     private static void loadDummyData() {
         // Add dummy data for members
