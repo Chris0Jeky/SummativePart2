@@ -1,8 +1,8 @@
 package task2;
 
 class PGAInstructor {
-    private String name;
-    private int coachLevel;
+    private final String name;
+    private final int coachLevel;
 
     public PGAInstructor(String name, int coachLevel) {
         this.name = name;
