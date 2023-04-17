@@ -21,7 +21,7 @@ public class InstructorManager {
                 System.out.println((i + 1) + ". " + instructors.get(i).getName() + " (Level " + instructors.get(i).getCoachLevel() + ")");
             }
             System.out.print("Enter your choice: ");
-            instructorChoice = scanner.nextInt() - 1;
+            instructorChoice = readIntInRange(scanner, 1, instructors.size()) - 1; // Read the user's choice
             scanner.nextLine(); // Consume the newline character
 
             if (instructorChoice < 0 || instructorChoice >= instructors.size()) {

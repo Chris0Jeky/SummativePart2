@@ -22,7 +22,7 @@ public class MemberManager {
                 System.out.println((i + 1) + ". " + members.get(i).getName());
             }
             System.out.print("Enter your choice: ");
-            memberChoice = scanner.nextInt() - 1;
+            memberChoice = readIntInRange(scanner, 1, members.size()) - 1; // Read the user's choice
             scanner.nextLine(); // Consume the newline character
 
             if (memberChoice < 0 || memberChoice >= members.size()) {
@@ -46,7 +46,7 @@ public class MemberManager {
                 System.out.println((i + 1) + ". " + juniorMembers.get(i).getName());
             }
             System.out.print("Enter your choice: ");
-            juniorMemberChoice = scanner.nextInt() - 1;
+            juniorMemberChoice = readIntInRange(scanner, 1, juniorMembers.size()) - 1; // Read the user's choice
             scanner.nextLine(); // Consume the newline character
 
             if (juniorMemberChoice < 0 || juniorMemberChoice >= juniorMembers.size()) {
