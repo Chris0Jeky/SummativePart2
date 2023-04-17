@@ -7,6 +7,12 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import static task2.BookingManager.bookJuniorGroupTuition;
+import static task2.BookingManager.bookOneToOneTuition;
+import static task2.InstructorManager.selectInstructor;
+import static task2.MemberManager.selectJuniorMember;
+import static task2.MemberManager.selectMember;
+
 public class ApplicationRunner {
 
     private static List<Member> members;
@@ -20,6 +26,10 @@ public class ApplicationRunner {
         bookings = new ArrayList<>();
 
         loadDummyData();
+
+        MemberManager memberManager = new MemberManager(members);
+        InstructorManager instructorManager = new InstructorManager(instructors);
+        BookingManager bookingManager = new BookingManager(bookings);
 
         boolean running = true;
         Scanner scanner = new Scanner(System.in);
@@ -107,68 +117,6 @@ public class ApplicationRunner {
         System.out.print("Enter your choice: ");
     }
 
-    private static Member selectMember(Scanner scanner) {
-        System.out.println("Select a member:");
-        int memberChoice = -1;
-        do {
-            for (int i = 0; i < members.size(); i++) {
-                System.out.println((i + 1) + ". " + members.get(i).getName());
-            }
-            System.out.print("Enter your choice: ");
-            memberChoice = scanner.nextInt() - 1;
-            scanner.nextLine(); // Consume the newline character
-
-            if (memberChoice < 0 || memberChoice >= members.size()) {
-                System.out.println("Invalid choice. Please try again.");
-            }
-        } while (memberChoice < 0 || memberChoice >= members.size());
-
-        return members.get(memberChoice);
-    }
-
-    private static JuniorMember selectJuniorMember(Scanner scanner) {
-        System.out.println("Select a junior member:");
-        List<JuniorMember> juniorMembers = members.stream()
-                .filter(m -> m instanceof JuniorMember)
-                .map(m -> (JuniorMember) m)
-                .collect(Collectors.toList());
-        int juniorMemberChoice = -1;
-        do {
-            for (int i = 0; i < juniorMembers.size(); i++) {
-                System.out.println((i + 1) + ". " + juniorMembers.get(i).getName());
-            }
-            System.out.print("Enter your choice: ");
-            juniorMemberChoice = scanner.nextInt() - 1;
-            scanner.nextLine(); // Consume the newline character
-
-            if (juniorMemberChoice < 0 || juniorMemberChoice >= juniorMembers.size()) {
-                System.out.println("Invalid choice. Please try again.");
-            }
-        } while (juniorMemberChoice < 0 || juniorMemberChoice >= juniorMembers.size());
-
-        return juniorMembers.get(juniorMemberChoice);
-    }
-
-
-    private static PGAInstructor selectInstructor(Scanner scanner) {
-        System.out.println("Select an instructor:");
-        int instructorChoice = -1;
-        do {
-            for (int i = 0; i < instructors.size(); i++) {
-                System.out.println((i + 1) + ". " + instructors.get(i).getName() + " (Level " + instructors.get(i).getCoachLevel() + ")");
-            }
-            System.out.print("Enter your choice: ");
-            instructorChoice = scanner.nextInt() - 1;
-            scanner.nextLine(); // Consume the newline character
-
-            if (instructorChoice < 0 || instructorChoice >= instructors.size()) {
-                System.out.println("Invalid choice. Please try again.");
-            }
-        } while (instructorChoice < 0 || instructorChoice >= instructors.size());
-
-        return instructors.get(instructorChoice);
-    }
-
     private static void loadDummyData() {
         // Add dummy data for members
         members.add(new AdultMember("Alice"));
@@ -188,83 +136,17 @@ public class ApplicationRunner {
         bookings.add(new Booking(new GroupLesson(members.get(2), instructors.get(2), "Monday", 16, 3)));
     }
 
-
-    public static void bookOneToOneTuition(Member member, PGAInstructor instructor, String day, int time) {
-
-        // Validate day input
-        if (!isValidDay(day)) {
-            System.out.println("Invalid day. Please enter a valid day (e.g., Monday, Tuesday, etc.).");
-            return;
-        }
-
-        // Validate time input
-        if (!isValidTime(time)) {
-            System.out.println("Invalid time. Please enter a valid time between 9 and 18 (inclusive).");
-            return;
-        }
-        // Check if the member or the instructor already has a booking at the specified day and time
-        for (Booking booking : bookings) {
-            Tuition tuition = booking.getTuition();
-            if ((tuition.getMember().equals(member) || tuition.getInstructor().equals(instructor)) &&
-                    tuition.getDay().equalsIgnoreCase(day) && tuition.getTime() == time) {
-                System.out.println("The selected member or the selected instructor already has a booking at the specified day/time.");
-                return;
-            }
-        }
-
-        // Create a new one-to-one lesson and add it to the bookings
-        OneToOneLesson oneToOneLesson = new OneToOneLesson(member, instructor, day, time);
-        Booking newBooking = new Booking(oneToOneLesson);
-        bookings.add(newBooking);
-        System.out.println("One-to-one lesson booked successfully.");
-    }
-
-
-    public static void bookJuniorGroupTuition(JuniorMember member, PGAInstructor instructor, String day, int time) {
-
-        // Validate day input
-        if (!isValidWeekday(day)) {
-            System.out.println("Invalid day. Please enter a valid weekday (e.g., Monday, Tuesday, etc.).");
-            return;
-        }
-
-        // Validate time input
-        if (time != 16 && time != 17) {
-            System.out.println("Invalid time. Please enter a valid time (16 or 17).");
-            return;
-        }
-
-        // Check if the junior member already has two group lesson bookings for the week
-        int groupLessonCount = 0;
-        for (Booking booking : bookings) {
-            Tuition tuition = booking.getTuition();
-            if (tuition instanceof GroupLesson && tuition.getMember().equals(member)) {
-                groupLessonCount++;
-            }
-        }
-        if (groupLessonCount >= 2) {
-            System.out.println("The selected junior member already has two group lesson bookings for the week.");
-            return;
-        }
-
-        // Create a new group lesson and add it to the bookings
-        GroupLesson groupLesson = new GroupLesson(member, instructor, day, time, 3);
-        Booking newBooking = new Booking(groupLesson);
-        bookings.add(newBooking);
-        System.out.println("Junior group lesson booked successfully.");
-    }
-
-    private static boolean isValidDay(String day) {
+    public static boolean isValidDay(String day) {
         String[] validDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
         return Arrays.stream(validDays).anyMatch(d -> d.equalsIgnoreCase(day));
     }
 
-    private static boolean isValidWeekday(String day) {
+    public static boolean isValidWeekday(String day) {
         String[] validDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
         return Arrays.stream(validDays).anyMatch(d -> d.equalsIgnoreCase(day));
     }
 
-    private static boolean isValidTime(int time) {
+    public static boolean isValidTime(int time) {
         return time >= 9 && time <= 18;
     }
 
