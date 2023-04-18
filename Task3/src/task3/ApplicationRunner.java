@@ -1,14 +1,12 @@
 package task3;
 
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,9 +15,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-
-import java.io.ByteArrayInputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -69,14 +64,31 @@ public class ApplicationRunner extends Application {
     }
 
     private void updateClock() {
-        Timeline clockTimeline = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-            ((ImageView) ((HBox) ((VBox) mainScene.getRoot()).getChildren().get(0)).getChildren().get(0)).setImage(new Image(new ByteArrayInputStream((LocalDateTime.now().format(formatter)).getBytes())));
-        }), new KeyFrame(Duration.seconds(1)));
+        // Get the current time and format it as HH:mm
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String formattedTime = now.format(formatter);
 
-        clockTimeline.setCycleCount(Animation.INDEFINITE);
-        clockTimeline.play();
+        // Access the headerPane and get the right node (topBar)
+        VBox mainScreen = (VBox) mainScene.getRoot();
+        BorderPane headerPane = (BorderPane) mainScreen.getChildren().get(0);
+        HBox topBar = (HBox) headerPane.getRight();
+
+        // Find the clock label
+        Label clockLabel = null;
+        for (Node node : topBar.getChildren()) {
+            if (node instanceof Label) {
+                clockLabel = (Label) node;
+                break;
+            }
+        }
+
+        if (clockLabel != null) {
+            // Update the clock label with the current time
+            clockLabel.setText(formattedTime);
+        }
     }
+
 
     public static void main(String[] args) {
         launch(args);
