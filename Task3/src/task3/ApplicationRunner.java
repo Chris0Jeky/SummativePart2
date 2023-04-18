@@ -31,6 +31,7 @@ public class ApplicationRunner extends Application {
     private Scene mapScene;
     private Scene fitnessScene;
     private Scene dashboardScene;
+    private Scene settingsScene;
 
     private double distance;
     private int timeInMinutes;
@@ -39,6 +40,10 @@ public class ApplicationRunner extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Cycling App");
+
+
+        VBox settingsScreen = createSettingsScreen();
+        settingsScene = new Scene(settingsScreen, 300, 600);
 
         VBox mainScreen = createMainScreen();
         mainScene = new Scene(mainScreen, 300, 600);
@@ -89,6 +94,7 @@ public class ApplicationRunner extends Application {
         Button settingsButton = createButton("Settings");
 
         // Add event handlers for interactive buttons
+        settingsButton.setOnAction(event -> handleSettingsSectionClick());
         dashboardButton.setOnAction(event -> handleDashboardSectionClick());
         mapButton.setOnAction(event -> handleMapSectionClick());
         fitnessButton.setOnAction(event -> handleFitnessSectionClick());
@@ -190,6 +196,30 @@ public class ApplicationRunner extends Application {
         BorderPane.setAlignment(backButton, Pos.BOTTOM_LEFT);
 
         return mapScreen;
+    }
+
+    private VBox createSettingsScreen() {
+        VBox settingsScreen = new VBox(10);
+        settingsScreen.setAlignment(Pos.CENTER);
+
+        HBox topBar = createTopBar();
+        settingsScreen.getChildren().add(topBar);
+
+        // Add your settings UI components here (e.g., sliders, checkboxes, etc.)
+        Label settingsTitle = new Label("Settings");
+        settingsTitle.setStyle("-fx-font-size: 24;");
+
+        // Add a back button
+        Button backButton = new Button("Back");
+        backButton.setOnAction(event -> handleBackButtonClick());
+        settingsScreen.getChildren().addAll(settingsTitle, backButton);
+
+        return settingsScreen;
+    }
+
+    private void handleSettingsSectionClick() {
+        // Change the scene to the settings screen
+        primaryStage.setScene(settingsScene);
     }
 
     private void handleMapSectionClick() {
