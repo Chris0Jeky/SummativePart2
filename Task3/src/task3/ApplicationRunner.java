@@ -93,8 +93,10 @@ public class ApplicationRunner extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
+    // create the main screen
     private VBox createMainScreen() {
+        // Create the main screen layout
+        // Add a header pane, buttons, and a top bar
         VBox mainScreen = new VBox(10);
         mainScreen.setAlignment(Pos.CENTER);
 
@@ -110,7 +112,7 @@ public class ApplicationRunner extends Application {
         HBox topBar = createTopBar();
         mainScreen.getChildren().add(topBar);
 
-
+        // Add interactive buttons
         Button dashboardButton = createButton("Dashboard");
         Button mapButton = createButton("Map");
         Button fitnessButton = createButton("Fitness");
@@ -146,6 +148,7 @@ public class ApplicationRunner extends Application {
         return button;
     }
 
+    // create top bar
     private HBox createTopBar() {
         HBox topBar = new HBox(10);
         topBar.setAlignment(Pos.CENTER);
@@ -165,6 +168,7 @@ public class ApplicationRunner extends Application {
         return topBar;
     }
 
+    // create history screen
     private VBox createHistoryScreen() {
         VBox historyScreen = new VBox(10);
         historyScreen.setAlignment(Pos.CENTER);
@@ -346,6 +350,8 @@ public class ApplicationRunner extends Application {
         });
     }
 
+    // TODO: Add a method to handle the time label click event
+    //     (similar to handleDistanceClick)
     private void handleTimeClick() {
         TextInputDialog timeInputDialog = new TextInputDialog();
         timeInputDialog.setTitle("Time");
