@@ -1,7 +1,9 @@
 
 package task3;
 
-
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -9,9 +11,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -95,18 +94,28 @@ public class ApplicationRunner extends Application {
 
     private HBox createTopBar() {
         HBox topBar = new HBox();
+
         // Add clock, battery, and Wi-Fi icons to the topBar
+        Image clockIcon = new Image(getClass().getResourceAsStream("images/clock-event-history.png"));
+        ImageView clockView = new ImageView(clockIcon);
+
+        Image batteryIcon = new Image(getClass().getResourceAsStream("images/battery-icon-6.png"));
+        ImageView batteryView = new ImageView(batteryIcon);
+
+        Image networkIcon = new Image(getClass().getResourceAsStream("images/network-icon.png"));
+        ImageView networkView = new ImageView(networkIcon);
+
+        topBar.getChildren().addAll(clockView, batteryView, networkView);
+        topBar.setSpacing(10);
+
         return topBar;
     }
-
-
-
 
     private BorderPane createMapScreen() {
         BorderPane mapScreen = new BorderPane();
 
         // Load the map image and create an ImageView to display it
-        Image mapImage = new Image("file:map.png");
+        Image mapImage = new Image(getClass().getResourceAsStream("images/hendon-area.png"));
         ImageView mapView = new ImageView(mapImage);
         mapScreen.setCenter(mapView);
 
@@ -216,9 +225,4 @@ public class ApplicationRunner extends Application {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-
-
-
-
 }
