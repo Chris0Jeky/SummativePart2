@@ -13,9 +13,18 @@ public class FileReader {
 
         try {
             //Gets the current working directory
-            //  and appends the file name to it
-            String dataFile = System.getProperty("user.dir") + File.separator + "Task1/sports-personalities.txt";
-            File file = new File(dataFile);
+            String userDir = System.getProperty("user.dir");
+
+            //Appends the file name to the current working directory
+            String dataFile1 = userDir + File.separator + "sports-personalities.txt";
+            String dataFile2 = userDir + File.separator + "Task1" + File.separator + "sports-personalities.txt";
+
+            File file = new File(dataFile1);
+
+            if (!file.exists()) {
+                file = new File(dataFile2);
+            }
+
             if (!file.exists()) {
                 //For debugging purposes
                 System.out.println("File does not exist");
