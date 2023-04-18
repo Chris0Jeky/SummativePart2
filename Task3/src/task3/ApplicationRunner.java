@@ -30,6 +30,7 @@ public class ApplicationRunner extends Application {
     private Scene mainScene;
     private Scene mapScene;
     private Scene fitnessScene;
+    private Scene dashboardScene;
 
     private double distance;
     private int timeInMinutes;
@@ -47,6 +48,9 @@ public class ApplicationRunner extends Application {
 
         GridPane fitnessScreen = createFitnessScreen();
         fitnessScene = new Scene(fitnessScreen, 300, 600);
+
+        VBox dashboardScreen = createDashboardScreen();
+        dashboardScene = new Scene(dashboardScreen, 300, 600);
 
         primaryStage.setScene(mainScene);
         primaryStage.show();
@@ -76,6 +80,7 @@ public class ApplicationRunner extends Application {
         HBox topBar = createTopBar();
         mainScreen.getChildren().add(topBar);
 
+
         Button dashboardButton = createButton("Dashboard");
         Button navigateButton = createButton("Navigate");
         Button historyButton = createButton("History");
@@ -84,6 +89,7 @@ public class ApplicationRunner extends Application {
         Button settingsButton = createButton("Settings");
 
         // Add event handlers for interactive buttons
+        dashboardButton.setOnAction(event -> handleDashboardSectionClick());
         mapButton.setOnAction(event -> handleMapSectionClick());
         fitnessButton.setOnAction(event -> handleFitnessSectionClick());
 
@@ -118,6 +124,56 @@ public class ApplicationRunner extends Application {
         topBar.getChildren().addAll(clockView, batteryView, networkView);
 
         return topBar;
+    }
+
+    private VBox createDashboardScreen() {
+        VBox dashboardScreen = new VBox(10);
+        dashboardScreen.setAlignment(Pos.CENTER);
+
+        HBox topBar = createTopBar();
+        dashboardScreen.getChildren().add(topBar);
+
+        // Add images and labels for each section
+        Image bikeImage = new Image(getClass().getResourceAsStream("images/blue-bike-on-white.png"), 100, 100, true, true);
+        ImageView bikeView = new ImageView(bikeImage);
+        Label bikeLabel = new Label("Bike Status");
+
+        Image navImage = new Image(getClass().getResourceAsStream("images/nav-icon.png"), 100, 100, true, true);
+        ImageView navView = new ImageView(navImage);
+        Label navLabel = new Label("Navigation");
+
+        Image historyImage = new Image(getClass().getResourceAsStream("images/clock-event-history.png"), 100, 100, true, true);
+        ImageView historyView = new ImageView(historyImage);
+        Label historyLabel = new Label("History");
+
+        Image settingsImage = new Image(getClass().getResourceAsStream("images/gear-icon.png"), 100, 100, true, true);
+        ImageView settingsView = new ImageView(settingsImage);
+        Label settingsLabel = new Label("Settings");
+
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.add(bikeView, 0, 0);
+        grid.add(bikeLabel, 0, 1);
+        grid.add(navView, 1, 0);
+        grid.add(navLabel, 1, 1);
+        grid.add(historyView, 0, 2);
+        grid.add(historyLabel, 0, 3);
+        grid.add(settingsView, 1, 2);
+        grid.add(settingsLabel, 1, 3);
+
+        // Add a back button
+        Button backButton = new Button("Back");
+        backButton.setOnAction(event -> handleBackButtonClick());
+        dashboardScreen.getChildren().addAll(grid, backButton);
+
+        return dashboardScreen;
+    }
+
+    private void handleDashboardSectionClick() {
+        // Change the scene to the dashboard screen
+        primaryStage.setScene(dashboardScene);
     }
 
     private BorderPane createMapScreen() {
