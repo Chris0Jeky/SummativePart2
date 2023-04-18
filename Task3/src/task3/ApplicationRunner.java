@@ -1,6 +1,8 @@
-
 package task3;
 
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -17,14 +19,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextInputDialog;
-import java.util.Optional;
-
-
+import java.io.ByteArrayInputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
+import java.util.Optional;
 
 public class ApplicationRunner extends Application {
 
@@ -52,17 +50,28 @@ public class ApplicationRunner extends Application {
 
         primaryStage.setScene(mainScene);
         primaryStage.show();
+
+        // Update clock
+        updateClock();
     }
 
+    private void updateClock() {
+        Timeline clockTimeline = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            ((ImageView) ((HBox) ((VBox) mainScene.getRoot()).getChildren().get(0)).getChildren().get(0)).setImage(new Image(new ByteArrayInputStream((LocalDateTime.now().format(formatter)).getBytes())));
+        }), new KeyFrame(Duration.seconds(1)));
+
+        clockTimeline.setCycleCount(Animation.INDEFINITE);
+        clockTimeline.play();
+    }
 
     public static void main(String[] args) {
         launch(args);
     }
 
-
-
     private VBox createMainScreen() {
-        VBox mainScreen = new VBox();
+        VBox mainScreen = new VBox(10);
+        mainScreen.setAlignment(Pos.CENTER);
 
         HBox topBar = createTopBar();
         mainScreen.getChildren().add(topBar);
@@ -77,9 +86,9 @@ public class ApplicationRunner extends Application {
         // Add event handlers for interactive buttons
         mapButton.setOnAction(event -> handleMapSectionClick());
         fitnessButton.setOnAction(event -> handleFitnessSectionClick());
-        historyButton.setOnAction(event -> handleHistorySectionClick());
 
-        VBox buttonsLayout = new VBox();
+        VBox buttonsLayout = new VBox(10);
+        buttonsLayout.setAlignment(Pos.CENTER);
         buttonsLayout.getChildren().addAll(dashboardButton, navigateButton, historyButton, mapButton, fitnessButton, settingsButton);
         mainScreen.getChildren().add(buttonsLayout);
 
@@ -93,29 +102,28 @@ public class ApplicationRunner extends Application {
     }
 
     private HBox createTopBar() {
-        HBox topBar = new HBox();
+        HBox topBar = new HBox(10);
+        topBar.setAlignment(Pos.CENTER);
 
         // Add clock, battery, and Wi-Fi icons to the topBar
-        Image clockIcon = new Image(getClass().getResourceAsStream("images/clock-event-history.png"));
+        Image clockIcon = new Image(getClass().getResourceAsStream("images/clock-event-history.png"), 16, 16, true, true);
         ImageView clockView = new ImageView(clockIcon);
 
-        Image batteryIcon = new Image(getClass().getResourceAsStream("images/battery-icon-6.png"));
+        Image batteryIcon = new Image(getClass().getResourceAsStream("images/battery-icon-6.png"), 16, 16, true, true);
         ImageView batteryView = new ImageView(batteryIcon);
 
-        Image networkIcon = new Image(getClass().getResourceAsStream("images/network-icon.png"));
+        Image networkIcon = new Image(getClass().getResourceAsStream("images/network-icon.png"), 16, 16, true, true);
         ImageView networkView = new ImageView(networkIcon);
 
         topBar.getChildren().addAll(clockView, batteryView, networkView);
-        topBar.setSpacing(10);
 
         return topBar;
     }
 
     private BorderPane createMapScreen() {
         BorderPane mapScreen = new BorderPane();
-
         // Load the map image and create an ImageView to display it
-        Image mapImage = new Image(getClass().getResourceAsStream("images/hendon-area.png"));
+        Image mapImage = new Image(getClass().getResourceAsStream("images/hendon-area.png"), 300, 575, false, false);
         ImageView mapView = new ImageView(mapImage);
         mapScreen.setCenter(mapView);
 
@@ -123,6 +131,7 @@ public class ApplicationRunner extends Application {
         Button backButton = new Button("Back");
         backButton.setOnAction(event -> handleBackButtonClick());
         mapScreen.setBottom(backButton);
+        BorderPane.setAlignment(backButton, Pos.BOTTOM_LEFT);
 
         return mapScreen;
     }
@@ -132,27 +141,10 @@ public class ApplicationRunner extends Application {
         primaryStage.setScene(mapScene);
     }
 
-
     private void handleFitnessSectionClick() {
         // Change the scene to the fitness screen
         primaryStage.setScene(fitnessScene);
     }
-
-
-    private void handleHistorySectionClick() {
-        // Display stored ride data
-    }
-
-    private void updateClock(Label clockLabel) {
-        Timeline clockTimeline = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-            clockLabel.setText(LocalDateTime.now().format(formatter));
-        }), new KeyFrame(Duration.seconds(1)));
-
-        clockTimeline.setCycleCount(Animation.INDEFINITE);
-        clockTimeline.play();
-    }
-
 
     private void handleBackButtonClick() {
         // Change the scene back to the main screen
@@ -161,17 +153,19 @@ public class ApplicationRunner extends Application {
 
     private GridPane createFitnessScreen() {
         GridPane fitnessScreen = new GridPane();
+        fitnessScreen.setAlignment(Pos.CENTER);
+        fitnessScreen.setHgap(10);
+        fitnessScreen.setVgap(10);
 
         // Create labels for each section
-        Label distanceLabel = new Label("Distance");
-        Label timeLabel = new Label("Time");
-        Label caloriesLabel = new Label("Calories");
-        Label hrZoneLabel = new Label("HR Zone");
-        Label powerZoneLabel = new Label("Power Zone");
+        Label distanceLabel = new Label("Distance: " + distance + " km");
+        Label timeLabel = new Label("Time: " + timeInMinutes + " min");
+        Label caloriesLabel = new Label("Calories: " + (int) (distance * 50) + " kcal");
+        Label hrZoneLabel = new Label("HR Zone: 130-150 BPM");
+        Label powerZoneLabel = new Label("Power Zone: 200-300 W");
         Label stopLabel = new Label("Stop");
 
         // Add event handlers for interactive sections (Distance and Time)
-        // You'll need to implement the handleDistanceClick and handleTimeClick methods
         distanceLabel.setOnMouseClicked(event -> handleDistanceClick());
         timeLabel.setOnMouseClicked(event -> handleTimeClick());
 
@@ -183,7 +177,12 @@ public class ApplicationRunner extends Application {
         fitnessScreen.add(powerZoneLabel, 0, 2);
         fitnessScreen.add(stopLabel, 1, 2);
 
-        // Style the fitness screen as needed
+        // Add a back button
+        Button backButton = new Button("Back");
+        backButton.setOnAction(event -> handleBackButtonClick());
+        fitnessScreen.add(backButton, 0, 3);
+        GridPane.setColumnSpan(backButton, 2);
+        GridPane.setHalignment(backButton, javafx.geometry.HPos.CENTER);
 
         return fitnessScreen;
     }
@@ -197,6 +196,7 @@ public class ApplicationRunner extends Application {
         distanceInput.ifPresent(input -> {
             try {
                 distance = Double.parseDouble(input);
+                ((Label) fitnessScene.lookup("#distanceLabel")).setText("Distance: " + distance + " km");
             } catch (NumberFormatException e) {
                 showAlert("Invalid input", "Please enter a valid number for distance.");
             }
@@ -212,6 +212,7 @@ public class ApplicationRunner extends Application {
         timeInput.ifPresent(input -> {
             try {
                 timeInMinutes = Integer.parseInt(input);
+                ((Label) fitnessScene.lookup("#timeLabel")).setText("Time: " + timeInMinutes + " min");
             } catch (NumberFormatException e) {
                 showAlert("Invalid input", "Please enter a valid number for time.");
             }
@@ -226,3 +227,4 @@ public class ApplicationRunner extends Application {
         alert.showAndWait();
     }
 }
+
