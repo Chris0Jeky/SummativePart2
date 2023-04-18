@@ -32,6 +32,7 @@ public class ApplicationRunner extends Application {
     private Scene fitnessScene;
     private Scene dashboardScene;
     private Scene settingsScene;
+    private Scene historyScene;
 
     private double distance;
     private int timeInMinutes;
@@ -41,6 +42,9 @@ public class ApplicationRunner extends Application {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Cycling App");
 
+
+        VBox historyScreen = createHistoryScreen();
+        historyScene = new Scene(historyScreen, 300, 600);
 
         VBox settingsScreen = createSettingsScreen();
         settingsScene = new Scene(settingsScreen, 300, 600);
@@ -82,13 +86,20 @@ public class ApplicationRunner extends Application {
         VBox mainScreen = new VBox(10);
         mainScreen.setAlignment(Pos.CENTER);
 
+        BorderPane headerPane = createHeaderPane();
+        mainScreen.getChildren().add(headerPane);
+
+        Button navigateButton = createButton("Navigate");
+        navigateButton.setOnAction(event -> handleMapSectionClick());
+
+        Button historyButton = createButton("History");
+        historyButton.setOnAction(event -> handleHistorySectionClick());
+
         HBox topBar = createTopBar();
         mainScreen.getChildren().add(topBar);
 
 
         Button dashboardButton = createButton("Dashboard");
-        Button navigateButton = createButton("Navigate");
-        Button historyButton = createButton("History");
         Button mapButton = createButton("Map");
         Button fitnessButton = createButton("Fitness");
         Button settingsButton = createButton("Settings");
@@ -105,6 +116,16 @@ public class ApplicationRunner extends Application {
         mainScreen.getChildren().add(buttonsLayout);
 
         return mainScreen;
+    }
+
+
+    private BorderPane createHeaderPane() {
+        BorderPane headerPane = new BorderPane();
+
+        HBox topBar = createTopBar();
+        headerPane.setRight(topBar);
+
+        return headerPane;
     }
 
     private Button createButton(String text) {
@@ -130,6 +151,25 @@ public class ApplicationRunner extends Application {
         topBar.getChildren().addAll(clockView, batteryView, networkView);
 
         return topBar;
+    }
+
+    private VBox createHistoryScreen() {
+        VBox historyScreen = new VBox(10);
+        historyScreen.setAlignment(Pos.CENTER);
+
+        BorderPane headerPane = createHeaderPane();
+        historyScreen.getChildren().add(headerPane);
+
+        // Add your history UI components here (e.g., list of past activities, etc.)
+        Label historyTitle = new Label("History");
+        historyTitle.setStyle("-fx-font-size: 24;");
+
+        // Add a back button
+        Button backButton = new Button("Back");
+        backButton.setOnAction(event -> handleBackButtonClick());
+        historyScreen.getChildren().addAll(historyTitle, backButton);
+
+        return historyScreen;
     }
 
     private VBox createDashboardScreen() {
@@ -215,6 +255,11 @@ public class ApplicationRunner extends Application {
         settingsScreen.getChildren().addAll(settingsTitle, backButton);
 
         return settingsScreen;
+    }
+
+    private void handleHistorySectionClick() {
+        // Change the scene to the history screen
+        primaryStage.setScene(historyScene);
     }
 
     private void handleSettingsSectionClick() {
